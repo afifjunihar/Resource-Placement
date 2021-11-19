@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -19,6 +20,13 @@ namespace API.Models
 		public int User_Id { get; set; }
 		public int Project_Id { get; set; }
 
+		[JsonIgnore]
+		[ForeignKey("User_Id")]
+		public virtual User Users { get; set; }
+
+		[JsonIgnore]
+		[ForeignKey("Project_Id")]
+		public virtual Project Projects { get; set; }
 	}
 
 	public enum InterviewResult

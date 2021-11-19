@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -18,7 +19,8 @@ namespace API.Models
 		public string Required_Skill { get; set; }
 		public Status Status { get; set; }
 
-		// Relation Above
+		[JsonIgnore]
+		public virtual ICollection<Interview> Interviews { get; set; }
 	}
 
 	public enum Status

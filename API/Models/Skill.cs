@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -14,6 +15,7 @@ namespace API.Models
 		public int Skill_Id { get; set; }
 		public string Skill_Name { get; set; }
 
-		// Relation Above
+		[JsonIgnore]
+		public virtual ICollection<SkillHandler> SkillHandlers { get; set; }
 	}
 }

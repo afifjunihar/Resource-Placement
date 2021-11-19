@@ -37,7 +37,22 @@ namespace API.Context
 			modelBuilder.Entity<User>()
 				.HasOne(u => u.Account)
 				.WithOne(a => a.User);
-			// SkillHandler with User
+			//  User with SkillHandler
+			modelBuilder.Entity<User>()
+				.HasMany(s => s.SkillHandlers)
+				.WithOne(u => u.User);
+			// User with Interview
+			modelBuilder.Entity<User>()
+				.HasMany(i => i.Interviews)
+				.WithOne(u => u.Users);
+			// SkillHandler with Skill
+			modelBuilder.Entity<Skill>()
+				.HasMany(h => h.SkillHandlers)
+				.WithOne(s => s.Skills);
+			// Project with Interview
+			modelBuilder.Entity<Project>()
+				.HasMany(i => i.Interviews)
+				.WithOne(p => p.Projects);
 
 			// Convert User - Gender Enum
 			modelBuilder.Entity<User>()
@@ -47,6 +62,15 @@ namespace API.Context
 			modelBuilder.Entity<User>()
 				.Property(o => o.User_Status)
 				.HasConversion<string>();
+			// Convert Interview - Status Enum
+			modelBuilder.Entity<Interview>()
+				.Property(o => o.Interview_Result)
+				.HasConversion<string>();
+			// Convert Project - Status Enum
+			modelBuilder.Entity<Project>()
+				.Property(o => o.Status)
+				.HasConversion<string>();
+
 		}
 	}
 }

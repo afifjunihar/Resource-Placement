@@ -15,7 +15,6 @@ namespace API.Models
 		public int Role_Id { get; set; }
 		public string Role_Name { get; set; }
 
-		/* --------- Relation ---------- */
 		[JsonIgnore]
 		public virtual ICollection<AccountRole> AccountRole { get; set; }
 	}
