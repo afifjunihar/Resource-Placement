@@ -1,5 +1,6 @@
 ﻿using API.Base;
 using API.Models;
+using API.Models.ViewModels;
 using API.Repository.Data;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -24,6 +25,22 @@ namespace API.Controllers
         {
             this.user = userRepository;
             this._configuration = configuration;
+        }
+
+        [HttpPost]
+        [Route("Registration/Candidate")]
+        public ActionResult RegisterCandidate(RegisterVM registerVM) 
+        {
+            var result = user.RegisterCandidate(registerVM);
+            if (result == 0)
+            {
+                return Ok();
+            }
+            else 
+            {
+                return BadRequest();
+            }
+            
         }
 
     }

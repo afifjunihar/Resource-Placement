@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace API.Repository.Data
 {
-    public class RoleRepository : GeneralRepository<ResourceContext, Role, string>
+    public class RoleRepository : GeneralRepository<ResourceContext, Role, int>
     {
         private readonly ResourceContext rContext;
         public RoleRepository(ResourceContext rContext) : base(rContext)
