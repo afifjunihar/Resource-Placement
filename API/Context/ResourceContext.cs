@@ -36,7 +36,8 @@ namespace API.Context
 			// User with Account
 			modelBuilder.Entity<User>()
 				.HasOne(u => u.Account)
-				.WithOne(a => a.User);
+				.WithOne(a => a.User)
+				.HasForeignKey<Account>(fk => fk.User_Id);
 			//  User with SkillHandler
 			modelBuilder.Entity<User>()
 				.HasMany(s => s.SkillHandlers)

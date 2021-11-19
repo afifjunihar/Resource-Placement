@@ -7,8 +7,11 @@ using System.Threading.Tasks;
 
 namespace API.Repository.Data
 {
-    public class ProjectRepository : GeneralRepository<ResourceContext, Project, string>
+    public class ProjectRepository : GeneralRepository<ResourceContext, Project, int>
     {
+		public ProjectRepository(ResourceContext resourceContext) : base (resourceContext)
+		{
 
+		}
     }
 }

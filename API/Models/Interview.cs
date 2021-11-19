@@ -17,7 +17,7 @@ namespace API.Models
 		public InterviewResult Interview_Result { get; set; }
 		public string Description { get; set; }
 		public string ReadBy { get; set; }
-		public int User_Id { get; set; }
+		public string User_Id { get; set; }
 		public int Project_Id { get; set; }
 
 		[JsonIgnore]

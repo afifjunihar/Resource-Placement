@@ -1,11 +1,17 @@
-﻿using System;
+﻿using API.Context;
+using API.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace API.Repository.Data
 {
-    public class InterviewRepository
+    public class InterviewRepository : GeneralRepository<ResourceContext, Interview, int>
     {
+		public InterviewRepository(ResourceContext resourceContext) : base (resourceContext)
+		{
+
+		}
     }
 }

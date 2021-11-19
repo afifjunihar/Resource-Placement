@@ -14,7 +14,7 @@ namespace API.Models
 		[Key]
 		public int Skill_Handler_Id { get; set; }
 		public int Score { get; set; }
-		public int User_Id { get; set; }
+		public string User_Id { get; set; }
 		public int Skill_Id { get; set; }
 
 		[JsonIgnore]

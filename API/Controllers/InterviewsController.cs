@@ -1,5 +1,6 @@
 ﻿using API.Base;
 using API.Models;
+using API.Repository.Data;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -11,7 +12,11 @@ namespace API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class InterviewsController : BaseController<Interview, InterviewsRepository>
+    public class InterviewsController : BaseController<Interview, InterviewRepository, int>
     {
+		public InterviewsController(InterviewRepository interviewRepository) : base(interviewRepository)
+		{
+
+		}
     }
 }

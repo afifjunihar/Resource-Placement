@@ -15,12 +15,9 @@ namespace API.Controllers
     [ApiController]
     public class RolesController : BaseController<Role, RoleRepository, int>
     {
-        public readonly RoleRepository role;
-        public IConfiguration _configuration;
-        public RolesController(RoleRepository roleRepository, IConfiguration configuration) : base(roleRepository)
+        public RolesController(RoleRepository roleRepository) : base(roleRepository)
         {
-            this.role = roleRepository;
-            this._configuration = configuration;
+
         }
     }
 }
