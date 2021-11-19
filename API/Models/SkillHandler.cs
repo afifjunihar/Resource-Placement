@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -16,6 +17,13 @@ namespace API.Models
 		public int User_Id { get; set; }
 		public int Skill_Id { get; set; }
 
-		// Relation Above
+		[JsonIgnore]
+		[ForeignKey("User_Id")]
+		public virtual User User { get; set; }
+
+
+		[JsonIgnore]
+		[ForeignKey("Skill_Id")]
+		public virtual Skill Skills { get; set; }
 	}
 }

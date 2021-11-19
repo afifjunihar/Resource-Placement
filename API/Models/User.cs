@@ -26,6 +26,12 @@ namespace API.Models
 		[ForeignKey("Account_Id")]
 		public virtual Account Account { get; set; }
 
+		[JsonIgnore]
+		public virtual ICollection<SkillHandler> SkillHandlers { get; set; }
+
+		[JsonIgnore]
+		public virtual ICollection<Interview> Interviews { get; set; }
+
 	}
 
 	public enum Gender
