@@ -18,30 +18,37 @@ namespace API.Repository.Data
 
       public int Register(RegisterVM registerVM)
       {
-         var user = new User
+         var userData = new User
          {
             User_Id = registerVM.User_Id,
-				FirstName = registerVM.FirstName,
+            FirstName = registerVM.FirstName,
             LastName = registerVM.LastName,
             Email = registerVM.Email,
             Phone = registerVM.Phone,
             Gender = registerVM.Gender,
             User_Status = registerVM.User_Status,
             Manager_Id = registerVM.Manager_Id,
-            Account = new Account
-            {
-               Username = registerVM.Username,
-               Password = registerVM.Password
-            }
          };
+         uContext.Users.Add(userData);
+         uContext.SaveChanges();
+
+         var accountData = new Account
+         {
+            User_Id = userData.User_Id,
+            Username = registerVM.Username,
+            Password = registerVM.Password
+         };
+         uContext.Accounts.Add(accountData);
+         uContext.SaveChanges();
+
          var accountRoles = new AccountRole
          {
+            User_Id = userData.User_Id,
             Role_Id = 1
          };
-
-         uContext.Users.Add(user);
          uContext.AccountRoles.Add(accountRoles);
          uContext.SaveChanges();
+
          return 0;
       }
 
