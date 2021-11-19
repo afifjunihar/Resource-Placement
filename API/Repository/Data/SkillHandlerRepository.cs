@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace API.Repository.Data
 {
-    public class SkillHandlerRepository : GeneralRepository<ResourceContext, SkillHandler, string>
+    public class SkillHandlerRepository : GeneralRepository<ResourceContext, SkillHandler, int>
     {
        private readonly ResourceContext shContext;
         public SkillHandlerRepository(ResourceContext shContext) : base(shContext)
