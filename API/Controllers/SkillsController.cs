@@ -1,5 +1,6 @@
 ﻿using API.Base;
 using API.Models;
+using API.Models.ViewModels;
 using API.Repository.Data;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -23,6 +24,22 @@ namespace API.Controllers
             this.skill = skillRepository;
             this._configuration = configuration;
         }
+
+        [HttpPost]
+        [Route("AddSkills")]
+        public ActionResult AddCandidatesSkill(AddSkillVM addSkill)
+        {
+            var result = skill.AddSkill(addSkill);
+            if (result == 0)
+            {
+                return Ok();
+            }
+            else 
+            {
+                return BadRequest();
+            }
+        }
+
     }
 
 }

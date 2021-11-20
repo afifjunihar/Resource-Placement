@@ -41,8 +41,15 @@ namespace API
 			services.AddScoped<Hashing>();
 
 			services.AddDbContext<ResourceContext>(options =>
-			options.UseSqlServer(Configuration.GetConnectionString("APIContext"))
+				options.UseLazyLoadingProxies()
+				.UseSqlServer(Configuration.GetConnectionString("APIContext"))
 			);
+			services.AddControllers().AddNewtonsoftJson(x =>
+					 x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+			services.AddCors(c =>
+			{
+				c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin());
+			});
 
 		}
 

@@ -17,48 +17,252 @@ namespace API.Repository.Data
             this.uContext = uContext;
         }
 
-        public int RegisterCandidate(RegisterVM registerVM) 
+        public int Register(RegisterVM registerVM) 
         {
-            var user = new User
+            var checkEmail = uContext.Users.Where(p => p.Email == registerVM.Email).FirstOrDefault();
+            var checkPhone = uContext.Users.Where(p => p.Phone == registerVM.Phone).FirstOrDefault();
+            var checkNik = uContext.Users.Find(registerVM.User_Id);
+            if (registerVM.User_Id == string.Empty)
             {
-                User_Id = registerVM.User_Id,
-                FirstName = registerVM.FirstName,
-                LastName = registerVM.LastName,
-                Email = registerVM.Email,
-                Phone = registerVM.Phone,             
-                Gender = registerVM.Gender,
-                User_Status = registerVM.User_Status,
-                Manager_Id = registerVM.Manager_Id,
-                Account = new Account
-                {
-                    Username = registerVM.Username,
-                    Password = Hashing.HashPassword(registerVM.Password)               
-                }
-            };
-            var accountRoles = new AccountRole
+                return 1;
+            }
+            else if (checkNik != null)
             {
+                return 2;
+            }
+            else if (checkEmail != null)
+            {
+                return 3;
+            }
+            else if (checkPhone != null)
+            {
+                return 4;
+            }
+            else if (registerVM.Manager_Id == string.Empty)
+            {
+                return 4;
+            }
+            else
+            { 
+              var user = new User
+              {
+                    User_Id = registerVM.User_Id,
+                    FirstName = registerVM.FirstName,
+                    LastName = registerVM.LastName,
+                    Email = registerVM.Email,
+                    Phone = registerVM.Phone,
+                    Gender = registerVM.Gender,
+                    User_Status = registerVM.User_Status,
+                    Manager_Id = registerVM.Manager_Id,
+                    Account = new Account
+                    {
+                            Username = registerVM.Username,
+                            Password = Hashing.HashPassword(registerVM.Password)
+                    }
+              };
+        
+              uContext.Users.Add(user);
+              uContext.SaveChanges();    
+              return 0;
+            }
+        }
+        public int AssignCandidate(RegisterVM registerVM) 
+        {
+            var AccountId = uContext.Users.Find(registerVM.User_Id).Account_Id;
+            var candidate = new AccountRole
+            {
+                Account_Id = AccountId,
                 Role_Id = 1
             };
-
-            uContext.Users.Add(user);
-            uContext.AccountRoles.Add(accountRoles);
-            uContext.SaveChanges();    
+            uContext.AccountRoles.Add(candidate);
+            uContext.SaveChanges();
             return 0;
         }
-
-        public int RegisterClient()
+        public int AssignClient(RegisterVM registerVM)
         {
+            var AccountId = uContext.Users.Find(registerVM.User_Id).Account_Id;
+            var candidate = new AccountRole
+            {
+                Account_Id = AccountId,
+                Role_Id = 3
+            };
+            uContext.AccountRoles.Add(candidate);
+            uContext.SaveChanges();
+            return 0;
+        }
+        public int AssignTrainer(RegisterVM registerVM)
+        {
+            var AccountId = uContext.Users.Find(registerVM.User_Id).Account_Id;
+            var candidate = new AccountRole
+            {
+                Account_Id = AccountId,
+                Role_Id = 2
+            };
+            uContext.AccountRoles.Add(candidate);
+            uContext.SaveChanges();
+            return 0;
+        }
+        public int AssignManager(RegisterVM registerVM)
+        {
+            var AccountId = uContext.Users.Find(registerVM.User_Id).Account_Id;
+            var candidate = new AccountRole
+            {
+                Account_Id = AccountId,
+                Role_Id = 4
+            };
+            uContext.AccountRoles.Add(candidate);
+            uContext.SaveChanges();
             return 0;
         }
 
-        public int RegisterTrainer()
+
+        public object Profile(string UserId) 
         {
-            return 0;
+            var listUser = uContext.Users.ToList();
+            var getData = from a in listUser
+                          where a.User_Id == UserId
+                          select new
+                          {
+                              a.User_Id,
+                              Fullname = a.FirstName + " " + a.LastName,
+                              a.Email,
+                              a.Gender,
+                              a.Phone,
+                              a.User_Status
+                          };
+
+            int hitungData = getData.Count();
+            if (hitungData == 0)
+            {
+                string checkData = "Tidak ditemukan Data pada Database";
+                return checkData;
+            }
+            else
+            {
+                return getData;
+            }
         }
-        public int RegisterManager()
+        public dynamic CandidateProfile()
         {
-            return 0;
+            var listUser = uContext.Users.ToList();
+            var listAccountRoles = uContext.AccountRoles.ToList();
+            var listRoles = uContext.Roles.ToList();
+            var getData = from a in listUser
+                          join b in listAccountRoles on a.Account_Id equals b.Account_Id
+                          join c in listRoles on b.Role_Id equals c.Role_Id 
+                          where c.Role_Id == 1                        
+                          select new
+                          {
+                              a.User_Id,
+                              Fullname = a.FirstName + " " + a.LastName,
+                              a.Email,
+                              a.Gender,
+                              a.Phone,
+                              a.User_Status        
+                          };
+
+            int hitungData = getData.Count();
+            if (hitungData == 0)
+            {
+                string checkData = "Tidak ditemukan Data pada Database";
+                return checkData;
+            }
+            else
+            {
+                return getData;
+            }
         }
+        public object ManagerProfile()
+        {
+            var listUser = uContext.Users.ToList();
+            var listAccountRoles = uContext.AccountRoles.ToList();
+            var listRoles = uContext.Roles.ToList();
+            var getData = from a in listUser
+                          join b in listAccountRoles on a.Account_Id equals b.Account_Id
+                          join c in listRoles on b.Role_Id equals c.Role_Id
+                          where c.Role_Id == 4
+                          select new
+                          {
+                              a.User_Id,
+                              Fullname = a.FirstName + " " + a.LastName,
+                              a.Email,
+                              a.Gender,
+                              a.Phone,
+                              a.User_Status
+                          };
+
+            int hitungData = getData.Count();
+            if (hitungData == 0)
+            {
+                string checkData = "Tidak ditemukan Data pada Database";
+                return checkData;
+            }
+            else
+            {
+                return getData;
+            }
+        }
+        public object TrainerProfile()
+        {
+            var listUser = uContext.Users.ToList();
+            var listAccountRoles = uContext.AccountRoles.ToList();
+            var listRoles = uContext.Roles.ToList();
+            var getData = from a in listUser
+                          join b in listAccountRoles on a.Account_Id equals b.Account_Id
+                          join c in listRoles on b.Role_Id equals c.Role_Id
+                          where c.Role_Id == 2
+                          select new
+                          {
+                              a.User_Id,
+                              Fullname = a.FirstName + " " + a.LastName,
+                              a.Email,
+                              a.Gender,
+                              a.Phone,
+                              a.User_Status
+                          };
+
+            int hitungData = getData.Count();
+            if (hitungData == 0)
+            {
+                string checkData = "Tidak ditemukan Data pada Database";
+                return checkData;
+            }
+            else
+            {
+                return getData;
+            }
+        }
+        public object ClientProfile()
+        {
+            var listUser = uContext.Users.ToList();
+            var listAccountRoles = uContext.AccountRoles.ToList();
+            var listRoles = uContext.Roles.ToList();
+            var getData = from a in listUser
+                          join b in listAccountRoles on a.Account_Id equals b.Account_Id
+                          join c in listRoles on b.Role_Id equals c.Role_Id
+                          where c.Role_Id == 3
+                          select new
+                          {
+                              a.User_Id,
+                              Fullname = a.FirstName + " " + a.LastName,
+                              a.Email,
+                              a.Gender,
+                              a.Phone,
+                              a.User_Status
+                          };
+
+            int hitungData = getData.Count();
+            if (hitungData == 0)
+            {
+                string checkData = "Tidak ditemukan Data pada Database";
+                return checkData;
+            }
+            else
+            {
+                return getData;
+            }
+        }
+
 
     }
 }
