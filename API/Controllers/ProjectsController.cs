@@ -11,16 +11,16 @@ using System.Threading.Tasks;
 
 namespace API.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class ProjectsController : BaseController<Project, ProjectRepository, int>
-    {
-        public readonly ProjectRepository project;
-        public IConfiguration _configuration;
-        public ProjectsController(ProjectRepository projectRepository, IConfiguration configuration) : base(projectRepository)
-        {
-            this.project = projectRepository;
-            this._configuration = configuration;
-        }
-    }
+	[Route("api/[controller]")]
+	[ApiController]
+	public class ProjectsController : BaseController<Project, ProjectRepository, int>
+	{
+		public readonly ProjectRepository project;
+		public IConfiguration _configuration;
+		public ProjectsController(ProjectRepository projectRepository, IConfiguration configuration) : base(projectRepository)
+		{
+			this.project = projectRepository;
+			this._configuration = configuration;
+		}
+	}
 }

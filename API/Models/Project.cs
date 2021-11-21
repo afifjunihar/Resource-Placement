@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -15,9 +16,9 @@ namespace API.Models
 		public int Project_Id { get; set; }
 		public string Project_Name { get; set; }
 		public int Capacity { get; set; }
-		public int Current_Capacity { get; set; }
+		public int Current_Capacity { get; set; } = 0;
 		public string Required_Skill { get; set; }
-		public Status Status { get; set; }
+		public Status Status { get; set; } = Status.Open;
 
 		[JsonIgnore]
 		public virtual ICollection<Interview> Interview { get; set; }

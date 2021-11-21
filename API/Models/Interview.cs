@@ -14,7 +14,7 @@ namespace API.Models
 		[Key]
 		public int Interview_Id { get; set; }
 		public DateTime Interview_Date { get; set; }
-		public InterviewResult Interview_Result { get; set; }
+		public InterviewResult Interview_Result { get; set; } = InterviewResult.Waiting;
 		public string Description { get; set; }
 		public string ReadBy { get; set; }
 		public string User_Id { get; set; }
@@ -31,8 +31,8 @@ namespace API.Models
 
 	public enum InterviewResult
 	{
+		Waiting,
 		Accepted,
-		Rejected,
-		Waiting
+		Rejected
 	}
 }

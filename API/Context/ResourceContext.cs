@@ -23,6 +23,11 @@ namespace API.Context
 		public DbSet<SkillHandler> SkillHandlers { get; set; }
 		public DbSet<User> Users { get; set; }
 
+		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+		{
+			optionsBuilder.UseLazyLoadingProxies();
+		}
+
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
 
