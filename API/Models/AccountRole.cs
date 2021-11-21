@@ -12,9 +12,11 @@ namespace API.Models
 	public class AccountRole
 	{
 		[Key]
-		public int Id { get; set; }
+		public int Account_Roles_Id { get; set; }
+
 		public int Account_Id { get; set; }
 		public int Role_Id { get; set; }
+
 
 		[JsonIgnore]
 		[ForeignKey("Role_Id")]

@@ -20,7 +20,7 @@ namespace API.Models
 		public Status Status { get; set; }
 
 		[JsonIgnore]
-		public virtual ICollection<Interview> Interviews { get; set; }
+		public virtual ICollection<Interview> Interview { get; set; }
 	}
 
 	public enum Status

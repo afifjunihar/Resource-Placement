@@ -1,4 +1,6 @@
 using API.Context;
+using API.Hashing_Password;
+using API.Repository.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -28,9 +30,27 @@ namespace API
 		public void ConfigureServices(IServiceCollection services)
 		{
 			services.AddControllers();
+			services.AddScoped<AccountRepository>();
+			services.AddScoped<AccountRoleRepository>();
+			services.AddScoped<InterviewRepository>();
+			services.AddScoped<ProjectRepository>();
+			services.AddScoped<RoleRepository>();
+			services.AddScoped<SkillHandlerRepository>();
+			services.AddScoped<SkillRepository>();
+			services.AddScoped<UserRepository>();
+			services.AddScoped<Hashing>();
+
 			services.AddDbContext<ResourceContext>(options =>
-			options.UseSqlServer(Configuration.GetConnectionString("APIContext"))
-		);
+				options.UseLazyLoadingProxies()
+				.UseSqlServer(Configuration.GetConnectionString("APIContext"))
+			);
+			services.AddControllers().AddNewtonsoftJson(x =>
+					 x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+			services.AddCors(c =>
+			{
+				c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin());
+			});
+
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

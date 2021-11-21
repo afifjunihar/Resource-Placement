@@ -12,25 +12,29 @@ namespace API.Models
 	public class User
 	{
 		[Key]
-		public int User_Id { get; set; }
+		public string User_Id { get; set; }
 		public string FirstName { get; set; }
 		public string LastName { get; set; }
 		public string Email { get; set; }
 		public string Phone { get; set; }
 		public Gender Gender { get; set; }
 		public CandidateStatus User_Status { get; set; }
-		public int? Manager_Id { get; set; }
 		public int Account_Id { get; set; }
+
+
+		[ForeignKey("Manager_Id")]
+		public string Manager_Id { get; set; }
+
 
 		[JsonIgnore]
 		[ForeignKey("Account_Id")]
 		public virtual Account Account { get; set; }
 
 		[JsonIgnore]
-		public virtual ICollection<SkillHandler> SkillHandlers { get; set; }
+		public virtual ICollection<SkillHandler> SkillHandler { get; set; }
 
 		[JsonIgnore]
-		public virtual ICollection<Interview> Interviews { get; set; }
+		public virtual ICollection<Interview> Interview { get; set; }
 
 	}
 

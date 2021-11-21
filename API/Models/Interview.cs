@@ -17,16 +17,16 @@ namespace API.Models
 		public InterviewResult Interview_Result { get; set; }
 		public string Description { get; set; }
 		public string ReadBy { get; set; }
-		public int User_Id { get; set; }
+		public string User_Id { get; set; }
 		public int Project_Id { get; set; }
 
 		[JsonIgnore]
 		[ForeignKey("User_Id")]
-		public virtual User Users { get; set; }
+		public virtual User User { get; set; }
 
 		[JsonIgnore]
 		[ForeignKey("Project_Id")]
-		public virtual Project Projects { get; set; }
+		public virtual Project Project { get; set; }
 	}
 
 	public enum InterviewResult

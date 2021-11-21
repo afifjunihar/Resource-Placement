@@ -16,6 +16,6 @@ namespace API.Models
 		public string Skill_Name { get; set; }
 
 		[JsonIgnore]
-		public virtual ICollection<SkillHandler> SkillHandlers { get; set; }
+		public virtual ICollection<SkillHandler> SkillHandler { get; set; }
 	}
 }

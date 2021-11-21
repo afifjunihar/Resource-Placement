@@ -14,7 +14,7 @@ namespace API.Models
 		[Key]
 		public int Skill_Handler_Id { get; set; }
 		public int Score { get; set; }
-		public int User_Id { get; set; }
+		public string User_Id { get; set; }
 		public int Skill_Id { get; set; }
 
 		[JsonIgnore]
@@ -24,6 +24,6 @@ namespace API.Models
 
 		[JsonIgnore]
 		[ForeignKey("Skill_Id")]
-		public virtual Skill Skills { get; set; }
+		public virtual Skill Skill { get; set; }
 	}
 }
