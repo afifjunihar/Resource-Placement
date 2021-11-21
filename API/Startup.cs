@@ -1,4 +1,5 @@
 using API.Context;
+using API.Hashing_Password;
 using API.Repository.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -28,11 +29,7 @@ namespace API
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
 		{
-			services
-				.AddControllers()
-				.AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore); // error handle lazyloading;
-			services.AddDbContext<ResourceContext>(options =>
-			options.UseSqlServer(Configuration.GetConnectionString("APIContext")));
+			services.AddControllers();
 			services.AddScoped<AccountRepository>();
 			services.AddScoped<AccountRoleRepository>();
 			services.AddScoped<InterviewRepository>();
@@ -41,6 +38,19 @@ namespace API
 			services.AddScoped<SkillHandlerRepository>();
 			services.AddScoped<SkillRepository>();
 			services.AddScoped<UserRepository>();
+			services.AddScoped<Hashing>();
+
+			services.AddDbContext<ResourceContext>(options =>
+				options.UseLazyLoadingProxies()
+				.UseSqlServer(Configuration.GetConnectionString("APIContext"))
+			);
+			services.AddControllers().AddNewtonsoftJson(x =>
+					 x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+			services.AddCors(c =>
+			{
+				c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin());
+			});
+
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -24,6 +24,6 @@ namespace API.Models
 
 		[JsonIgnore]
 		[ForeignKey("Skill_Id")]
-		public virtual Skill Skills { get; set; }
+		public virtual Skill Skill { get; set; }
 	}
 }

@@ -22,11 +22,11 @@ namespace API.Models
 
 		[JsonIgnore]
 		[ForeignKey("User_Id")]
-		public virtual User Users { get; set; }
+		public virtual User User { get; set; }
 
 		[JsonIgnore]
 		[ForeignKey("Project_Id")]
-		public virtual Project Projects { get; set; }
+		public virtual Project Project { get; set; }
 	}
 
 	public enum InterviewResult

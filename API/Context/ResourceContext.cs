@@ -25,48 +25,61 @@ namespace API.Context
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
+
 			// Role with AccRole
-			modelBuilder.Entity<Role>()
-				.HasMany(r => r.AccountRole)
-				.WithOne(a => a.Role);
-			// Account with AccRole
-			modelBuilder.Entity<Account>()
-				.HasMany(a => a.AccountRole)
-				.WithOne(r => r.Account);
+			//modelBuilder.Entity<AccountRole>()
+			//	.HasKey(t => new { t.Account_Id, t.Role_Id });
+
+			modelBuilder.Entity<AccountRole>()
+				.HasOne(pt => pt.Account)
+				.WithMany(p => p.AccountRole)
+				.HasForeignKey(pt => pt.Account_Id);
+
+			modelBuilder.Entity<AccountRole>()
+				.HasOne(pt => pt.Role)
+				.WithMany(p => p.AccountRole)
+				.HasForeignKey(pt => pt.Role_Id);			
+		
 			// User with Account
 			modelBuilder.Entity<User>()
 				.HasOne(u => u.Account)
-				.WithOne(a => a.User)
-				.HasForeignKey<Account>(fk => fk.User_Id);
+				.WithOne(a => a.User);
+
 			//  User with SkillHandler
 			modelBuilder.Entity<User>()
-				.HasMany(s => s.SkillHandlers)
+				.HasMany(s => s.SkillHandler)
 				.WithOne(u => u.User);
+
 			// User with Interview
 			modelBuilder.Entity<User>()
-				.HasMany(i => i.Interviews)
-				.WithOne(u => u.Users);
+				.HasMany(i => i.Interview)
+				.WithOne(u => u.User);
+
 			// SkillHandler with Skill
 			modelBuilder.Entity<Skill>()
-				.HasMany(h => h.SkillHandlers)
-				.WithOne(s => s.Skills);
+				.HasMany(h => h.SkillHandler)
+				.WithOne(s => s.Skill);
+
 			// Project with Interview
 			modelBuilder.Entity<Project>()
-				.HasMany(i => i.Interviews)
-				.WithOne(p => p.Projects);
+				.HasMany(i => i.Interview)
+				.WithOne(p => p.Project);
 
 			// Convert User - Gender Enum
 			modelBuilder.Entity<User>()
 				.Property(o => o.Gender)
 				.HasConversion<string>();
+
 			// Convert User - Status Enum
 			modelBuilder.Entity<User>()
 				.Property(o => o.User_Status)
 				.HasConversion<string>();
+
 			// Convert Interview - Status Enum
 			modelBuilder.Entity<Interview>()
 				.Property(o => o.Interview_Result)
 				.HasConversion<string>();
+
 			// Convert Project - Status Enum
 			modelBuilder.Entity<Project>()
 				.Property(o => o.Status)

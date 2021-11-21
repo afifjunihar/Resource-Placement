@@ -9,9 +9,10 @@ namespace API.Repository.Data
 {
     public class ProjectRepository : GeneralRepository<ResourceContext, Project, int>
     {
-		public ProjectRepository(ResourceContext resourceContext) : base (resourceContext)
-		{
-
-		}
+        private readonly ResourceContext pContext;
+        public ProjectRepository(ResourceContext pContext) : base(pContext) 
+        {
+            this.pContext = pContext;
+        }
     }
 }

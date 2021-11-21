@@ -9,9 +9,10 @@ namespace API.Repository.Data
 {
     public class InterviewRepository : GeneralRepository<ResourceContext, Interview, int>
     {
-		public InterviewRepository(ResourceContext resourceContext) : base (resourceContext)
-		{
-
-		}
+        private readonly ResourceContext iContext;
+        public InterviewRepository(ResourceContext iContext) : base(iContext) 
+        {
+            this.iContext = iContext;        
+        }
     }
 }
