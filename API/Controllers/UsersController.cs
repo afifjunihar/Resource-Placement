@@ -174,5 +174,23 @@ namespace API.Controllers
             }
         }
 
+
+        [HttpGet]
+        [Route("Profile/Skill")]
+        public ActionResult GetProfile(KeyVM key)
+        {
+            var result = user.CandidateSkill(key);
+            return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("Profile/ListSkill")]
+        public ActionResult ListCandidate()
+        {
+            var result = user.CandidateSkill();
+            return Ok(result);
+        }
+
+
     }
 }

@@ -1,6 +1,7 @@
 ﻿using API.Context;
 using API.Models;
 using API.Models.ViewModels;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,7 +19,7 @@ namespace API.Repository.Data
 
         public int AddSkill(AddSkillVM addskill)
         {
-            var checkSkill = sContext.SkillHandlers.Where(p => p.Skill_Id == addskill.Skill_Id).FirstOrDefault();
+            var checkSkill = sContext.SkillHandlers.Where(p => p.Skill_Id == addskill.Skill_Id && p.User_Id == addskill.User_Id).FirstOrDefault();
             if (addskill.User_Id == string.Empty || addskill.Skill_Id == 0)
             {
                 return 1;
@@ -28,8 +29,7 @@ namespace API.Repository.Data
                 return 2;
             }
             else 
-            {
-            
+            {            
                 var skill = new SkillHandler
                 {
                     Score = addskill.Score_skill,
@@ -40,6 +40,22 @@ namespace API.Repository.Data
                 sContext.SkillHandlers.Add(skill);
                 sContext.SaveChanges();
                 return 0;
+            }
+        }
+
+        public int UpdateSkill(AddSkillVM addskill)
+        {
+            var entity = sContext.SkillHandlers.Where(p => p.Skill_Id == addskill.Skill_Id && p.User_Id == addskill.User_Id).FirstOrDefault();
+            if (entity != null)
+            {
+                entity.Score = addskill.Score_skill;
+                sContext.Entry(entity).State = EntityState.Modified;
+                sContext.SaveChanges();
+                return 0;
+            }
+            else
+            {
+                return 1;
             }
         }
 
