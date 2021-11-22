@@ -15,7 +15,5 @@ namespace API.Repository.Data
 		{
 			this.pContext = pContext;
 		}
-
-	
 	}
 }

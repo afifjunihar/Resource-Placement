@@ -94,6 +94,34 @@ namespace API.Repository.Data
 			return 1;
 		}
 
+		public IEnumerable<Object> History(string UserID)
+		{
+			var historyList = from intv in iContext.Interviews
+									where intv.User_Id == UserID
+									select intv;
+
+			return historyList.ToList();
+		}
+
+		public Object Current(string UserID)
+		{
+			var currentProject = from intv in iContext.Interviews
+										join proj in iContext.Projects on intv.Project_Id equals proj.Project_Id
+										join usr in iContext.Users on intv.User_Id equals usr.User_Id
+										where usr.User_Status == CandidateStatus.Hired
+										where intv.Interview_Result == InterviewResult.Accepted
+										where intv.User_Id == UserID
+										orderby intv.Interview_Date descending
+										select new { 
+											Name = proj.Project_Name,
+											Accept_Date = intv.Interview_Date,
+											Spec = proj.Required_Skill
+										};
+			return currentProject.FirstOrDefault();
+
+		}
+
+		// Private Method
 		private void CheckCapacity(int projectId)
 		{
 			Project closeProject = iContext.Projects.Find(projectId);
@@ -110,5 +138,6 @@ namespace API.Repository.Data
 				iContext.SaveChanges();
 			}
 		}
+
 	}
 }
