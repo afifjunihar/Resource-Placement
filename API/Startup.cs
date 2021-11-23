@@ -1,5 +1,6 @@
 using API.Context;
 using API.Hashing_Password;
+using API.Library.Email;
 using API.Repository.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -78,6 +79,8 @@ namespace API
 					ClockSkew = TimeSpan.Zero
 				};
 			});
+			services.AddSingleton(Configuration.GetSection("EmailConfiguration").Get<EmailConfiguration>());
+			services.AddScoped<IEmailSender, EmailSender>();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

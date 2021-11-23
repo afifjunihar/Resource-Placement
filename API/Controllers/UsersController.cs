@@ -191,6 +191,12 @@ namespace API.Controllers
             return Ok(result);
         }
 
-
+        [HttpPost]
+        [Route("lupapassword")]
+        public ActionResult lupapassword(KeyVM key)
+        {
+            var result = user.lupaPassword(key);
+            return Ok(result);
+        }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using API.Context;
+using API.Library.Email;
 using API.Models;
 using API.Models.ViewModels;
 using Microsoft.EntityFrameworkCore;
@@ -12,10 +13,12 @@ namespace API.Repository.Data
     public class InterviewRepository : GeneralRepository<ResourceContext, Interview, int>
     {
         private readonly ResourceContext iContext;
-        public InterviewRepository(ResourceContext iContext) : base(iContext) 
-        {
-            this.iContext = iContext;        
-        }
+		private readonly IEmailSender _emailSender;
+		public InterviewRepository(ResourceContext iContext, IEmailSender emailSender) : base(iContext)
+		{
+			this.iContext = iContext;
+			this._emailSender = emailSender;
+		}
 
 		public int AssignInterview(InterviewVM interviewVM)
 		{
@@ -45,6 +48,26 @@ namespace API.Repository.Data
 				iContext.SaveChanges();
 				CheckCapacity(updateProject.Project_Id);
 
+				// Send Email
+				var Payload = new Message
+				(
+					//updateUser.Email,
+					"testwebpkl@gmail.com",
+					"Jadwal Interview",
+					new EmailVM
+					{
+						Sender_Alias = "HR Metrodata",
+						Action = "Interview",
+						Tanggal = interviewData.Interview_Date,
+						Nama = updateUser.FirstName + " " + updateUser.LastName,
+						Project_Name = updateProject.Project_Name,
+						Jobs = updateProject.Required_Skill
+					}
+				);
+				_emailSender.SendEmailAsync(Payload);
+				// End of Send Email
+
+
 				return 0;
 			}
 			return 1;
@@ -63,6 +86,26 @@ namespace API.Repository.Data
 				updateUser.User_Status = CandidateStatus.Hired;
 				iContext.Entry(updateUser).State = EntityState.Modified;
 				iContext.SaveChanges();
+
+				Project project = iContext.Projects.Find(entity.Project_Id);
+
+				// Send Email
+				var Payload = new Message
+				(
+					//updateUser.Email,
+					"testwebpkl@gmail.com",
+					"Hasil Interview",
+					new EmailVM
+					{
+						Sender_Alias = "Client Project",
+						Project_Name = project.Project_Name,
+						Jobs = project.Required_Skill,
+						Action = "Diterima",
+						Nama = updateUser.FirstName + " " + updateUser.LastName
+					}
+				);
+				_emailSender.SendEmailAsync(Payload);
+				// End of Send Email
 
 				return 0;
 			}
@@ -89,10 +132,59 @@ namespace API.Repository.Data
 				iContext.SaveChanges();
 				CheckCapacity(updateProject.Project_Id);
 
+				// Send Email
+				var Payload = new Message
+				(
+					//updateUser.Email,
+					"testwebpkl@gmail.com",
+					"Hasil Interview",
+					new EmailVM
+					{
+						Sender_Alias = "Client Project",
+						Action = "Ditolak",
+						Project_Name = updateProject.Project_Name,
+						Jobs = updateProject.Required_Skill,
+						Nama = updateUser.FirstName + " " + updateUser.LastName,
+						Note = key.KeyStr
+					}
+				);
+				_emailSender.SendEmailAsync(Payload);
+				// End of Send Email
+
+
 				return 0;
 			}
 			return 1;
 		}
+
+		public IEnumerable<Object> History(string UserID)
+		{
+			var historyList = from intv in iContext.Interviews
+							  where intv.User_Id == UserID
+							  select intv;
+
+			return historyList.ToList();
+		}
+
+		public Object Current(string UserID)
+		{
+			var currentProject = from intv in iContext.Interviews
+								 join proj in iContext.Projects on intv.Project_Id equals proj.Project_Id
+								 join usr in iContext.Users on intv.User_Id equals usr.User_Id
+								 where usr.User_Status == CandidateStatus.Hired
+								 where intv.Interview_Result == InterviewResult.Accepted
+								 where intv.User_Id == UserID
+								 orderby intv.Interview_Date descending
+								 select new
+								 {
+									 Name = proj.Project_Name,
+									 Accept_Date = intv.Interview_Date,
+									 Spec = proj.Required_Skill
+								 };
+			return currentProject.FirstOrDefault();
+
+		}
+
 
 		private void CheckCapacity(int projectId)
 		{
