@@ -1,5 +1,5 @@
 ﻿using API.Context;
-using API.Hashing_Password;
+using API.Library;
 using API.Models;
 using API.Models.ViewModels;
 using System;

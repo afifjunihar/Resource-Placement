@@ -1,4 +1,5 @@
 ﻿using API.Context;
+using API.Library.Email;
 using API.Models;
 using API.Models.ViewModels;
 using Microsoft.EntityFrameworkCore;
@@ -12,9 +13,11 @@ namespace API.Repository.Data
 	public class InterviewRepository : GeneralRepository<ResourceContext, Interview, int>
 	{
 		private readonly ResourceContext iContext;
-		public InterviewRepository(ResourceContext iContext) : base(iContext)
+		private readonly IEmailSender _emailSender;
+		public InterviewRepository(ResourceContext iContext, IEmailSender emailSender) : base(iContext)
 		{
 			this.iContext = iContext;
+			this._emailSender = emailSender;
 		}
 
 		public int AssignInterview(InterviewVM interviewVM)
@@ -45,6 +48,25 @@ namespace API.Repository.Data
 				iContext.SaveChanges();
 				CheckCapacity(updateProject.Project_Id);
 
+				// Send Email
+				var Payload = new Message
+				(
+					//updateUser.Email,
+					"testwebpkl@gmail.com",
+					"Jadwal Interview",
+					new EmailVM
+					{
+						Sender_Alias = "HR Metrodata",
+						Interview_Action = "Interview",
+						Tanggal = interviewData.Interview_Date,
+						Nama = updateUser.FirstName + " " + updateUser.LastName,
+						Project_Name = updateProject.Project_Name,
+						Jobs = updateProject.Required_Skill
+					}
+				);
+				_emailSender.SendEmailAsync(Payload);
+				// End of Send Email
+
 				return 0;
 			}
 			return 1;
@@ -64,6 +86,26 @@ namespace API.Repository.Data
 				iContext.Entry(updateUser).State = EntityState.Modified;
 				iContext.SaveChanges();
 
+				Project project = iContext.Projects.Find(entity.Project_Id);
+
+				// Send Email
+				var Payload = new Message
+				(
+					//updateUser.Email,
+					"testwebpkl@gmail.com",
+					"Hasil Interview",
+					new EmailVM
+					{
+						Sender_Alias = "Client Project",
+						Project_Name = project.Project_Name,
+						Jobs = project.Required_Skill,
+						Interview_Action = "Diterima",
+						Nama = updateUser.FirstName + " " + updateUser.LastName
+					}
+				);
+				_emailSender.SendEmailAsync(Payload);
+				// End of Send Email
+
 				return 0;
 			}
 			return 1;
@@ -75,6 +117,7 @@ namespace API.Repository.Data
 			if (entity != null)
 			{
 				entity.Interview_Result = InterviewResult.Rejected;
+				entity.Description = key.KeyStr;
 				iContext.Entry(entity).State = EntityState.Modified;
 				iContext.SaveChanges();
 
@@ -88,6 +131,25 @@ namespace API.Repository.Data
 				iContext.Entry(updateProject).State = EntityState.Modified;
 				iContext.SaveChanges();
 				CheckCapacity(updateProject.Project_Id);
+
+				// Send Email
+				var Payload = new Message
+				(
+					//updateUser.Email,
+					"testwebpkl@gmail.com",
+					"Hasil Interview",
+					new EmailVM
+					{
+						Sender_Alias = "Client Project",
+						Interview_Action = "Ditolak",
+						Project_Name = updateProject.Project_Name,
+						Jobs = updateProject.Required_Skill,
+						Nama = updateUser.FirstName + " " + updateUser.LastName,
+						Note = key.KeyStr
+					}
+				);
+				_emailSender.SendEmailAsync(Payload);
+				// End of Send Email
 
 				return 0;
 			}
@@ -139,5 +201,10 @@ namespace API.Repository.Data
 			}
 		}
 
+		//private void SendNotificationMail(string status)
+		//{
+		//	var message = new Message("testwebpkl@gmail.com", "Result Interview", new List<string> { "Selamat Kamu Lolos Mcc Dude","19-Agustus-2021" });
+		//	_emailSender.SendEmail(message);
+		//}
 	}
 }

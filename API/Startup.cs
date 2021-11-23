@@ -1,5 +1,6 @@
 using API.Context;
-using API.Hashing_Password;
+using API.Library;
+using API.Library.Email;
 using API.Repository.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -75,7 +76,11 @@ namespace API
 					ValidateLifetime = true,
 					ClockSkew = TimeSpan.Zero
 				};
-			});
+				});
+
+			// Email 
+			services.AddSingleton(Configuration.GetSection("EmailConfiguration").Get<EmailConfiguration>());
+			services.AddScoped<IEmailSender, EmailSender>();
 
 		}
 
