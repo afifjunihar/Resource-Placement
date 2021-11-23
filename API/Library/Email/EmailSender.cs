@@ -1,5 +1,4 @@
 ﻿using MailKit.Net.Smtp;
-using MailKit.Security;
 using MimeKit;
 using System;
 using System.Collections.Generic;
@@ -48,7 +47,7 @@ namespace API.Library.Email
             }
             else if (ActionEmail == "Reset Password") 
             {
-                bodyBuilder.HtmlBody = string.Format($"<div style='max-width:370px;border:1px solid #000;padding:2.1em'><div><h4>Dear <i>{message.Content.Nama}</i>,</h4><p style=text-align:justify>     Dengan email ini kami informasikan bahwa saudara/saudari <b><i>{message.Content.Nama}</i></b> telah mengajukan perubahan Password. Password Anda yang baru adalah {message.Content.Refresh_Password}.<p style=text-align:justify>Apabila Tidak melakukan perubahan password, mohon hubungi <i>HR Metrodata</i>.<p><b>Terima kasih.</b><p>{message.Content.Sender_Alias}</div><hr><div style=margin-top:2em;font-weight:700;color:#4169e1;font-size:.77em><p>PT. Mitra Integrasi Informatika<p>APL Tower, 37th Floor Jl.<p>Letjen S. Parman Kav. 28 Jakarta 11470</div></div>");
+                bodyBuilder.HtmlBody = string.Format($"<div style='max-width:370px;border:1px solid #000;padding:2.1em'><div><h4>Dear <i>{message.Content.Nama}</i>,</h4><p style=text-align:justify>     Dengan email ini kami informasikan bahwa saudara/saudari <b><i>{message.Content.Nama}</i></b> telah mengajukan perubahan Password. Password Anda yang baru adalah <b>{message.Content.Refresh_Password}</b> <p style=text-align:justify>Apabila Tidak melakukan perubahan password, mohon hubungi <i>Admin Metrodata</i>.<p><b>Terima kasih.</b><p>{message.Content.Sender_Alias}</div><hr><div style=margin-top:2em;font-weight:700;color:#4169e1;font-size:.77em><p>PT. Mitra Integrasi Informatika<p>APL Tower, 37th Floor Jl.<p>Letjen S. Parman Kav. 28 Jakarta 11470</div></div>");
                 emailMessage.Body = bodyBuilder.ToMessageBody();
                 return emailMessage;
             }

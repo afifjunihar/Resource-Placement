@@ -1,5 +1,6 @@
 ﻿using API.Context;
 using API.Hashing_Password;
+using API.Library;
 using API.Library.Email;
 using API.Models;
 using API.Models.ViewModels;
@@ -9,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+
 
 namespace API.Repository.Data
 {
@@ -43,10 +45,10 @@ namespace API.Repository.Data
             {
                 return 4;
             }
-            else if (registerVM.Manager_Id == string.Empty)
-            {
-                return 4;
-            }
+            //else if (registerVM.Manager_Id == null || registerVM.Manager_Id == string.Empty)
+            //{
+            //    return 5;
+            //}
             else
             { 
               var user = new User
@@ -58,7 +60,7 @@ namespace API.Repository.Data
                     Phone = registerVM.Phone,
                     Gender = registerVM.Gender,
                     User_Status = registerVM.User_Status,
-                    Manager_Id = registerVM.Manager_Id,
+                    Manager_Id = "M0001",
                     Account = new Account
                     {
                             Username = registerVM.Username,
@@ -323,7 +325,7 @@ namespace API.Repository.Data
             var ScoreFS = from a in listUser
                           join b in listSkillHandlers on a.User_Id equals b.User_Id
                           join c in listSKill on b.Skill_Id equals c.Skill_Id
-                          where c.Skill_Name == "Full-Stack Developer"
+                          where c.Skill_Name == "Full-Stack"
                           select new
                           {
                               Fullname = a.FirstName + " " + a.LastName,
@@ -373,42 +375,28 @@ namespace API.Repository.Data
 
             if (entitybyEmail != null)
             {
-                int length = 7;
+                string password = Password.Generate(15, 3);
+                var User = uContext.Users.Where(p => p.Account_Id == entitybyEmail.Account_Id).FirstOrDefault();
 
-                StringBuilder str_build = new StringBuilder();
-                Random random = new Random();
-
-                char letter;
-
-                for (int i = 0; i < length; i++)
-                {
-                    double flt = random.NextDouble();
-                    int shift = Convert.ToInt32(Math.Floor(25 * flt));
-                    letter = Convert.ToChar(shift + 65);
-                    str_build.Append(letter);
-                }
-           
                 // Send Email
                 var Payload = new Message
                 (
                    //updateUser.Email,
-                   "testwebpkl@gmail.com",
+                   "afifjunihar@gmail.com",
                     "Lupa Password",
                     new EmailVM
                     {
                         Sender_Alias = "Admin Metrodata",
                         Action = "Reset Password",
-                        Nama = entitybyEmail.FirstName + " " + entitybyEmail.LastName,
-                        Note = "KONTOL",
-
-                        Refresh_Password = str_build.ToString()
+                        Nama = entitybyEmail.FirstName + " " + entitybyEmail.LastName,     
+                        Refresh_Password = password
                     }
                 );
                 _emailSender.SendEmailAsync(Payload);
                 // End of Send Email  
 
                 Account Account = uContext.Accounts.Find(entitybyEmail.Account_Id);
-                Account.Password = str_build.ToString();
+                Account.Password = Hashing.HashPassword(password);
                 uContext.Entry(Account).State = EntityState.Modified;
                 uContext.SaveChanges();              
                 return 0;
@@ -416,37 +404,21 @@ namespace API.Repository.Data
 
             else if (entitybyUname != null)
             {
-
-                int length = 7;
-
-                StringBuilder str_build = new StringBuilder();
-                Random random = new Random();
-
-                char letter;
-
-                for (int i = 0; i < length; i++)
-                {
-                    double flt = random.NextDouble();
-                    int shift = Convert.ToInt32(Math.Floor(25 * flt));
-                    letter = Convert.ToChar(shift + 65);
-                    str_build.Append(letter);
-                }
-
+                string password = Password.Generate(15, 3);
                 var User = uContext.Users.Where(p => p.Account_Id == entitybyUname.Account_Id).FirstOrDefault();
 
                 // Send Email
                 var Payload = new Message
                 (
                     //updateUser.Email,
-                    "abby.rafdi@gmail.com",
+                    "afifjunihar@gmail.com",
                     "Lupa Password",
                     new EmailVM
                     {
                         Sender_Alias = "Admin Metrodata",
-                        Nama = User.FirstName + " " + User.LastName,
-                        Note = "KONTOL",
+                        Nama = User.FirstName + " " + User.LastName,                
                         Action = "Reset Password",
-                        Refresh_Password = str_build.ToString()
+                        Refresh_Password = password
                     }
                 );
                 _emailSender.SendEmailAsync(Payload);
@@ -454,7 +426,7 @@ namespace API.Repository.Data
 
 
                 Account Account = uContext.Accounts.Find(User.Account_Id);
-                Account.Password = str_build.ToString();
+                Account.Password = Hashing.HashPassword(password);
                 uContext.Entry(Account).State = EntityState.Modified;
                 uContext.SaveChanges();
                 return 0;

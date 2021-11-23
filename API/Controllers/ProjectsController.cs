@@ -1,5 +1,6 @@
 ﻿using API.Base;
 using API.Models;
+using API.Models.ViewModels;
 using API.Repository.Data;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -21,6 +22,14 @@ namespace API.Controllers
         {
             this.project = projectRepository;
             this._configuration = configuration;
+        }
+
+        [HttpPost]
+        [Route("ProjectApplicant")]
+        public ActionResult showApplicant(KeyVM keyVM) 
+        {
+            var result = project.showApplicant(keyVM);
+            return Ok(result);
         }
     }
 }
