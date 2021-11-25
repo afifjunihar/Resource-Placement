@@ -160,7 +160,7 @@ namespace API.Controllers
 
         [HttpGet]
         [Route("Profile/{UserId}")]
-        public ActionResult GetProfile(string UserId)
+        public ActionResult GetProfileUser(string UserId)
         {
             try
             {

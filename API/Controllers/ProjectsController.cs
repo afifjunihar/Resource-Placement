@@ -31,5 +31,15 @@ namespace API.Controllers
             var result = project.showApplicant(keyVM);
             return Ok(result);
         }
+
+        [HttpGet]
+        [Route("Applicant")]
+        public ActionResult Applicant(KeyVM keyVM)
+        {
+            var result = project.projectInterview(keyVM);
+            return Ok(result);
+        }
+
+
     }
 }

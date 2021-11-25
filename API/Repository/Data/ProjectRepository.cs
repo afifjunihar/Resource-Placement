@@ -15,8 +15,6 @@ namespace API.Repository.Data
         {
             this.pContext = pContext;
         }
-
-
         public dynamic showApplicant(KeyVM keyVM)
         {
 
@@ -92,6 +90,7 @@ namespace API.Repository.Data
                           orderby a.FirstName ascending
                           select new
                           {
+                              a.User_Id,
                               Fullname = a.FirstName + " "+ a.LastName,
                               a.Email,
                               a.Phone,
@@ -110,6 +109,31 @@ namespace API.Repository.Data
                 return getAplicant;
             }
         }
-
+        public dynamic projectInterview(KeyVM keyVM) 
+        {
+            var listInterview = pContext.Interviews.ToList();
+            var getData = from a in listInterview
+                          where a.Project_Id == keyVM.KeyInt
+                          select new
+                          {
+                              a.Project_Id,
+                              a.Interview_Id,
+                              a.Interview_Date,
+                              a.Interview_Result,
+                              a.User_Id,
+                              a.Description,
+                              a.ReadBy
+                          };
+            int hitungData = getData.Count();
+            if (hitungData == 0 )
+            {
+                string checkData = "Tidak ditemukan Data pada Database";
+                return checkData;
+            }
+            else
+            {
+                return getData;
+            }         
+        }
     }
 }

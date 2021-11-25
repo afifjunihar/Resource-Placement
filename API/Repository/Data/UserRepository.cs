@@ -126,7 +126,11 @@ namespace API.Repository.Data
         public object Profile(string UserId) 
         {
             var listUser = uContext.Users.ToList();
+            var listAccountRoles = uContext.AccountRoles.ToList();
+            var listRoles = uContext.Roles.ToList();
             var getData = from a in listUser
+                          join b in listAccountRoles on a.Account_Id equals b.Account_Id
+                          join c in listRoles on b.Role_Id equals c.Role_Id
                           where a.User_Id == UserId
                           select new
                           {
@@ -135,7 +139,8 @@ namespace API.Repository.Data
                               a.Email,
                               a.Gender,
                               a.Phone,
-                              a.User_Status
+                              a.User_Status,
+                              c.Role_Name
                           };
 
             int hitungData = getData.Count();
@@ -165,7 +170,8 @@ namespace API.Repository.Data
                               a.Email,
                               a.Gender,
                               a.Phone,
-                              a.User_Status        
+                              a.User_Status,
+                              c.Role_Name
                           };
 
             int hitungData = getData.Count();
@@ -195,7 +201,8 @@ namespace API.Repository.Data
                               a.Email,
                               a.Gender,
                               a.Phone,
-                              User_Status = "Manager"
+                              User_Status = "Manager",
+                              c.Role_Name
                           };
 
             int hitungData = getData.Count();
@@ -225,7 +232,8 @@ namespace API.Repository.Data
                               a.Email,
                               a.Gender,
                               a.Phone,
-                              User_Status ="Trainer"
+                              User_Status ="Trainer",
+                              c.Role_Name
                           };
 
             int hitungData = getData.Count();
@@ -255,7 +263,8 @@ namespace API.Repository.Data
                               a.Email,
                               a.Gender,
                               a.Phone,
-                              User_Status ="Client"
+                              User_Status ="Client",
+                              c.Role_Name
                           };
 
             int hitungData = getData.Count();

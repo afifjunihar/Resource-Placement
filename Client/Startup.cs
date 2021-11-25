@@ -34,7 +34,7 @@ namespace Client
 			services.AddSession();
 			services.AddHttpContextAccessor();
 
-			services.AddScoped<UserRepository>();
+			services.AddScoped<RegisterRepository>();
 			services.AddScoped<Address>();
 
 			//services.AddAuthentication(auth =>
