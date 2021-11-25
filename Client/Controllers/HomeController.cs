@@ -1,4 +1,5 @@
 ﻿using Client.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -23,15 +24,11 @@ namespace Client.Controllers
 			return View();
 		}
 
-		public IActionResult Privacy()
+		public IActionResult Dashboard()
 		{
 			return View();
 		}
 
-		public IActionResult Login()
-		{
-			return View();
-		}
 
 		[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
 		public IActionResult Error()

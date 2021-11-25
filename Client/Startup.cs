@@ -1,12 +1,19 @@
+using Client.Base.Urls;
+using Client.Repository.Data;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json.Converters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Client
@@ -24,6 +31,37 @@ namespace Client
 		public void ConfigureServices(IServiceCollection services)
 		{
 			services.AddControllersWithViews();
+			services.AddControllersWithViews();
+			services.AddSession();
+			services.AddHttpContextAccessor();
+			services.AddScoped<AccountRepository>();
+			services.AddScoped<InterviewRepository>();
+			services.AddScoped<Address>();
+
+			services.AddControllers().AddNewtonsoftJson(option => {
+				option.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+				option.SerializerSettings.Converters.Add(new StringEnumConverter()); // Make Enum To String
+			});
+
+			// JWT
+			services.AddAuthentication(auth =>
+			{
+				auth.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+				auth.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+			}).AddJwtBearer(option => {
+				option.RequireHttpsMetadata = false;
+				option.SaveToken = true;
+				option.TokenValidationParameters = new TokenValidationParameters()
+				{
+					ValidateIssuer = true,
+					ValidateAudience = false,
+					ValidAudience = Configuration["Jwt:Audience"],
+					ValidIssuer = Configuration["Jwt:Issuer"],
+					IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"])),
+					ValidateLifetime = true,
+					ClockSkew = TimeSpan.Zero
+				};
+			});
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -42,8 +80,20 @@ namespace Client
 			app.UseHttpsRedirection();
 			app.UseStaticFiles();
 
-			app.UseRouting();
+			app.UseSession();
 
+			app.Use(async (context, next) =>
+			{
+				var JWToken = context.Session.GetString("JWToken");
+				if (!string.IsNullOrEmpty(JWToken))
+				{
+					context.Request.Headers.Add("Authorization", "Bearer " + JWToken);
+				}
+				await next();
+			});
+
+			app.UseRouting();
+			app.UseAuthentication();
 			app.UseAuthorization();
 
 			app.UseEndpoints(endpoints =>
