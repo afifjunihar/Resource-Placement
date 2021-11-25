@@ -1,0 +1,52 @@
+﻿@{
+	Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Resource Placement - Login</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="~/css/login.css" />
+</head>
+<body>
+    <div class="limiter">
+        <div class="container-login">
+            <div class="wrap-login">
+                <div class="login-pic js-tilt" data-tilt>
+                    <img src="~/images/img-01.png" alt="IMG" />
+                </div>
+
+                <form autocomplete="off" class="login-form validate-form" id="loginForm">
+                    <span class="login-form-title">Resource Login </span>
+
+                    <div class="wrap-input">
+                        <input class="input" type="text" id="email" name="email" placeholder="Email" data-validate="Email is required" />
+                        <span class="focus-input"></span>
+                        <span class="symbol-input">
+                            <i class="fa fa-envelope" aria-hidden="true"></i>
+                        </span>
+                    </div>
+
+                    <div class="wrap-input">
+                        <input class="input" type="password" id="pass" name="pass" placeholder="Password" data-validate="Password is required" />
+                        <span class="focus-input"></span>
+                        <span class="symbol-input">
+                            <i class="fa fa-lock" aria-hidden="true"></i>
+                        </span>
+                    </div>
+
+                    <div class="container-login-form-btn">
+                        <button type="button" id="loginBtn" class="login-form-btn">Login</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/approvejs/3.1.2/approve.min.js"></script>
+    <script src="~/js/login.js"></script>
+</body>
+</html>

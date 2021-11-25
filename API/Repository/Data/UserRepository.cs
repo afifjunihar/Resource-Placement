@@ -195,7 +195,7 @@ namespace API.Repository.Data
                               a.Email,
                               a.Gender,
                               a.Phone,
-                              a.User_Status
+                              User_Status = "Manager"
                           };
 
             int hitungData = getData.Count();
@@ -225,7 +225,7 @@ namespace API.Repository.Data
                               a.Email,
                               a.Gender,
                               a.Phone,
-                              a.User_Status
+                              User_Status ="Trainer"
                           };
 
             int hitungData = getData.Count();
@@ -255,7 +255,7 @@ namespace API.Repository.Data
                               a.Email,
                               a.Gender,
                               a.Phone,
-                              a.User_Status
+                              User_Status ="Client"
                           };
 
             int hitungData = getData.Count();
