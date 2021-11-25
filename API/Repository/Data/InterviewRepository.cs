@@ -185,7 +185,6 @@ namespace API.Repository.Data
 
 		}
 
-
 		private void CheckCapacity(int projectId)
 		{
 			Project closeProject = iContext.Projects.Find(projectId);
