@@ -43,7 +43,14 @@
 					<li class="nav-item"><a class="nav-link" href="#about">About</a></li>
 					<li class="nav-item"><a class="nav-link" href="#services">Services</a></li>
 					<li class="nav-item">
-						<button class="btn btn-sm btn-primary px-4" type="button" data-toggle="modal" data-target="#exampleModal">Login</button>
+						@if (@ViewData["Token"] != null)
+						{
+							<a class="btn btn-sm btn-primary px-4" href="/dashboard" type="button">Dashboard</a>
+						}
+						else
+						{
+							<button class="btn btn-sm btn-primary px-4" type="button" data-toggle="modal" data-target="#exampleModal">Login</button>
+						}
 					</li>
 				</ul>
 			</div>
