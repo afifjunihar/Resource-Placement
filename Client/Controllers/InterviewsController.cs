@@ -27,6 +27,12 @@ namespace Client.Controllers
 			var result = await interview.Current(id);
 			return Json(result);
 		}
+
+		public async Task<JsonResult> History(string id)
+		{
+			var result = await interview.History(id);
+			return Json(result);
+		}
 	}
 }
 

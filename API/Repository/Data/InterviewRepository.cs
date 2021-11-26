@@ -160,9 +160,19 @@ namespace API.Repository.Data
 		{
 			var historyList = from intv in iContext.Interviews
 									where intv.User_Id == UserID
-									select intv;
+									join proj in iContext.Projects on intv.Project_Id equals proj.Project_Id
+									orderby intv.Interview_Id descending
+									select new
+									{
+										id = intv.Interview_Id,
+										name = proj.Project_Name,
+										req_skill = proj.Required_Skill,
+										jadwal = intv.Interview_Date,
+										status = intv.Interview_Result,
+										desc = intv.Description
+									};
 
-			return historyList.ToList();
+			return historyList.Take(3);
 		}
 
 		public Object Current(string UserID)
@@ -199,11 +209,5 @@ namespace API.Repository.Data
 				iContext.SaveChanges();
 			}
 		}
-
-		//private void SendNotificationMail(string status)
-		//{
-		//	var message = new Message("testwebpkl@gmail.com", "Result Interview", new List<string> { "Selamat Kamu Lolos Mcc Dude","19-Agustus-2021" });
-		//	_emailSender.SendEmail(message);
-		//}
 	}
 }

@@ -3,13 +3,25 @@
 	$.ajax({
 		url: '/Interviews/current/CN002',
 		success: function (result, textStatus, jqXHR) {
-			console.log(result)
-			console.log(textStatus);
-			console.log(jqXHR)
+			//console.log(result)
+			//console.log(textStatus);
+			//console.log(jqXHR)
 			if (result.stats == 'Waiting') {
 				RenderWaiting(result);
 			} else if (result.stats == 'Accepted') {
 				RenderAccept(result);
+			}
+		}
+	})
+
+	$.ajax({
+		url: '/Interviews/history/CN002',
+		success: function (result, textStatus, jqXHR) {
+			//console.log(result)
+			//console.log(textStatus);
+			//console.log(jqXHR)
+			if (result.length > 0) {
+				RenderTable(result);
 			}
 		}
 	})
@@ -52,7 +64,6 @@ function RenderWaiting(result) {
 	let month = nameMonths[date.getMonth()];
 	let day = date.getDate();
 	let time = formatAMPM(date);
-	console.log(time);
 	let project = result.name;
 	let stats = result.stats;
 
@@ -196,4 +207,28 @@ function RenderAccept(result) {
 	</div>
 `
 	document.getElementById("card-content").innerHTML = accTmp;
+}
+
+function RenderTable(result) {
+	let tableRes = '';
+	let num = 1;
+	$.each(result, function (index, value) {
+		const date = new Date(value.jadwal);
+		const tgl = date.toLocaleDateString('id-ID', { year: 'numeric', month: 'short', day: 'numeric' });
+		const jam = date.toLocaleTimeString('en-EN', { hour12: true, timeStyle: 'short' } );
+		const status = value.status;		
+
+		tableRes += `
+		<tr>
+			<td><a>${num++}</a></td>
+			<td>${value.name}</td>
+			<td>${value.req_skill}</td>
+			<td>${tgl}</td>
+			<td>${jam}</td>
+			<td>${status == 'Waiting' ? '<span class="badge badge-warning">Waiting</span>' : status == 'Rejected' ? '<span class="badge badge-danger">Rejected</span>' : '<span class="badge badge-success">Accpeted</span>' }
+			</td>
+		</tr>
+		`
+	})
+	document.getElementById('tblResult').innerHTML = tableRes;
 }

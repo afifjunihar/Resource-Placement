@@ -4,7 +4,6 @@
 	ViewData["Title"] = "Resource Placemant - Admin";
 }
 
-
 <!-- Breadcrumb-->
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
 	<h1 class="h3 mb-0 text-gray-800">Welcome, Candidate</h1>
@@ -49,7 +48,6 @@
 		<div class="card">
 			<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
 				<h6 class="m-0 font-weight-bold text-primary">Interview History</h6>
-				<a class="m-0 float-right btn btn-danger btn-sm" href="#">View More &nbsp;<i class="fas fa-chevron-right"></i></a>
 			</div>
 			<div class="table-responsive">
 				<table class="table align-items-center table-flush">
@@ -57,44 +55,15 @@
 						<tr>
 							<th>#</th>
 							<th>Project</th>
+							<th>Reqire Skill</th>
 							<th>Jadwal Interview</th>
+							<th>Jam</th>
 							<th>Status</th>
-							<th>Action</th>
 						</tr>
 					</thead>
-					<tbody>
+					<tbody id="tblResult">
 						<tr>
-							<td><a>1</a></td>
-							<td>Udin Wayang</td>
-							<td>Nasi Padang</td>
-							<td><span class="badge badge-success">Accepted</span></td>
-							<td>
-								<a href="#" class="btn btn-sm btn-info">
-									<i class="fas fa-info-circle"></i>
-								</a>
-							</td>
-						</tr>
-						<tr>
-							<td><a>2</a></td>
-							<td>Jaenab Bajigur</td>
-							<td>Gundam 90' Edition</td>
-							<td><span class="badge badge-danger">Rejected</span></td>
-							<td>
-								<a href="#" class="btn btn-sm btn-info">
-									<i class="fas fa-info-circle"></i>
-								</a>
-							</td>
-						</tr>
-						<tr>
-							<td><a>3</a></td>
-							<td>Rivat Mahesa</td>
-							<td>Oblong T-Shirt</td>
-							<td><span class="badge badge-danger">Rejected</span></td>
-							<td>
-								<a href="#" class="btn btn-sm btn-info">
-									<i class="fas fa-info-circle"></i>
-								</a>
-							</td>
+							<td colspan="5" class="text-center"><span>Tidak Ada History Interview</span></td>
 						</tr>
 					</tbody>
 				</table>
@@ -103,7 +72,6 @@
 		</div>
 	</div>
 </div>
-
 
 
 @section Script{
