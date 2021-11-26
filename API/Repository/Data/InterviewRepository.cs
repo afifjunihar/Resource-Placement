@@ -170,14 +170,13 @@ namespace API.Repository.Data
 			var currentProject = from intv in iContext.Interviews
 										join proj in iContext.Projects on intv.Project_Id equals proj.Project_Id
 										join usr in iContext.Users on intv.User_Id equals usr.User_Id
-										where usr.User_Status == CandidateStatus.Hired
-										where intv.Interview_Result == InterviewResult.Accepted
+										orderby intv.Interview_Id descending										
 										where intv.User_Id == UserID
-										orderby intv.Interview_Date descending
 										select new { 
 											Name = proj.Project_Name,
 											Accept_Date = intv.Interview_Date,
-											Spec = proj.Required_Skill
+											Spec = proj.Required_Skill,
+											Stats = intv.Interview_Result
 										};
 			return currentProject.FirstOrDefault();
 

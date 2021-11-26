@@ -24,6 +24,7 @@ namespace Client.Controllers
 			return View();
 		}
 
+		[Route("dashboard")]
 		public IActionResult Dashboard()
 		{
 			return View();

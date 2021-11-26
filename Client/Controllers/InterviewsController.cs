@@ -21,6 +21,12 @@ namespace Client.Controllers
 		{
 			return View();
 		}
+
+		public async Task<JsonResult> Current(string id)
+		{
+			var result = await interview.Current(id);
+			return Json(result);
+		}
 	}
 }
 
