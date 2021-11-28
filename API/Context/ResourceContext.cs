@@ -60,6 +60,11 @@ namespace API.Context
 				.HasMany(i => i.Interview)
 				.WithOne(u => u.User);
 
+			// User with project
+			modelBuilder.Entity<User>()
+				.HasMany(p => p.Project)
+				.WithOne(u => u.User);
+
 			// SkillHandler with Skill
 			modelBuilder.Entity<Skill>()
 				.HasMany(h => h.SkillHandler)

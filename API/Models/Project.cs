@@ -19,9 +19,14 @@ namespace API.Models
 		public int Current_Capacity { get; set; } = 0;
 		public string Required_Skill { get; set; }
 		public Status Status { get; set; } = Status.Open;
+		public string Creator_Id { get; set; }
 
 		[JsonIgnore]
 		public virtual ICollection<Interview> Interview { get; set; }
+
+		[JsonIgnore]
+		[ForeignKey("Creator_Id")]
+		public virtual User User { get; set; }
 	}
 
 	public enum Status

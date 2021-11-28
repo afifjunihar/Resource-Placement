@@ -36,6 +36,9 @@ namespace API.Models
 		[JsonIgnore]
 		public virtual ICollection<Interview> Interview { get; set; }
 
+		[JsonIgnore]
+		public virtual ICollection<Project> Project { get; set; }
+
 	}
 
 	public enum Gender
