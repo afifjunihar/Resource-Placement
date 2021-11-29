@@ -1,7 +1,7 @@
 ﻿$(document).ready(function () {
 
 	$.ajax({
-		url: '/Interviews/current/CN002',
+		url: '/Interviews/current/' + userID,
 		success: function (result, textStatus, jqXHR) {
 			//console.log(result)
 			//console.log(textStatus);
@@ -15,7 +15,7 @@
 	})
 
 	$.ajax({
-		url: '/Interviews/history/CN002',
+		url: '/Interviews/history/' + userID,
 		success: function (result, textStatus, jqXHR) {
 			//console.log(result)
 			//console.log(textStatus);

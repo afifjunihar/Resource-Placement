@@ -1,15 +1,19 @@
-﻿
+﻿@using System.Security.Claims;
+@using API.Library
+
 @{
-	Layout = "~/Views/Shared/Layout/CandidateLayout.cshtml";
-	ViewData["Title"] = "Resource Placemant - Admin";
+	 Layout = "~/Views/Shared/Layout/CandidateLayout.cshtml";
+	 ViewData["Title"] = "Resource Placemant - Admin";
+	 string UserID = ((ClaimsIdentity)User.Identity).GetSid();
+	 string fullname = ((ClaimsIdentity)User.Identity).GetName();
 }
 
 <!-- Breadcrumb-->
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-	<h1 class="h3 mb-0 text-gray-800">Welcome, Candidate</h1>
+	<h1 class="h3 mb-0 text-gray-800">Welcome, @fullname</h1>
 	<ol class="breadcrumb">
-		<li class="breadcrumb-item"><a href="./">Home</a></li>
-		@*<li class="breadcrumb-item">Pages</li>*@
+		@*<li class="breadcrumb-item"><a href="./">Home</a></li>*@
+		<li class="breadcrumb-item"><a href="#">Candidate</a></li>		
 		<li class="breadcrumb-item active" aria-current="page">Dashboard</li>
 	</ol>
 </div>
@@ -75,5 +79,8 @@
 
 
 @section Script{
+	<script>
+		const userID = "@UserID";
+	</script>
 	<script type="text/javascript" src="~/js/candidate.js"></script>
 }

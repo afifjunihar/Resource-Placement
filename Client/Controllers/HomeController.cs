@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System.Security.Claims;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -26,17 +27,27 @@ namespace Client.Controllers
 			return View();
 		}
 
-		[Route("dashboard")]
+		[Authorize]
+		[Route("/dashboard")]
 		public IActionResult Dashboard()
 		{
-			return View();
+			string role = User.FindFirstValue(ClaimTypes.Role);
+			if (role == "Candidate")
+			{
+				return View("~/Views/Home/CandidateDash.cshtml");
+			}
+			// Implementasi Kode afif...
+			return View("~/Views/Home/ClientDash.cshtml");
 		}
 
-		[Route("client")]
-		public IActionResult Client()
+		[Authorize]
+		[Route("/logout")]
+		public IActionResult Logout()
 		{
-			return View();
+			HttpContext.Session.Clear();
+			return RedirectToAction("index");
 		}
+
 
 		[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
 		public IActionResult Error()

@@ -24,7 +24,7 @@
 					let input = $('#email');
 					showValidate(input,response.message);
 				} else {
-					window.location = "/Home/Login"
+					window.location = "/dashboard"
 				}
 			}
 		})
