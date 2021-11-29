@@ -1,4 +1,5 @@
 ﻿using API.Models;
+using API.Models.ViewModels;
 using Client.Base;
 using Client.Repository.Data;
 using Microsoft.AspNetCore.Mvc;
@@ -33,6 +34,19 @@ namespace Client.Controllers
 			var result = await interview.History(id);
 			return Json(result);
 		}
+
+		public JsonResult Accept(KeyVM keyVM)
+		{
+			var result = interview.Accept(keyVM);
+			return Json(result);
+		}
+
+		public JsonResult Reject(KeyVM keyVM)
+		{
+			var result = interview.Reject(keyVM);
+			return Json(result);
+		}
+
 	}
 }
 

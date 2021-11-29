@@ -31,13 +31,13 @@ namespace Client.Repository.Data
       public HttpStatusCode Accept(KeyVM entity)
       {
          StringContent content = new StringContent(JsonConvert.SerializeObject(entity), Encoding.UTF8, "application/json");
-         var result = httpClient.PostAsync(_request + "accept/", content).Result;
+         var result = httpClient.PatchAsync(_request + "accept/", content).Result;
          return result.StatusCode;
       }
       public HttpStatusCode Reject(KeyVM entity)
       {
          StringContent content = new StringContent(JsonConvert.SerializeObject(entity), Encoding.UTF8, "application/json");
-         var result = httpClient.PostAsync(_request + "reject/", content).Result;
+         var result = httpClient.PatchAsync(_request + "reject/", content).Result;
          return result.StatusCode;
       }
 

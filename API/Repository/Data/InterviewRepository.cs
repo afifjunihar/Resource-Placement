@@ -40,6 +40,7 @@ namespace API.Repository.Data
 			iContext.SaveChanges();
 
 			Project updateProject = iContext.Projects.Find(interviewData.Project_Id);
+			User client = iContext.Users.Find(updateProject.Creator_Id);
 			bool isFull = updateProject.Current_Capacity == updateProject.Capacity;
 			if (!isFull)
 			{
@@ -48,12 +49,12 @@ namespace API.Repository.Data
 				iContext.SaveChanges();
 				CheckCapacity(updateProject.Project_Id);
 
-				// Send Email
+				// Send Email To Candidate
 				var Payload = new Message
 				(
 					//updateUser.Email,
 					"testwebpkl@gmail.com",
-					"Jadwal Interview",
+					"Jadwal Interview Dengan Client",
 					new EmailVM
 					{
 						Sender_Alias = "HR Metrodata",
@@ -65,7 +66,27 @@ namespace API.Repository.Data
 					}
 				);
 				_emailSender.SendEmailAsync(Payload);
-				// End of Send Email
+
+				// Send Email To Client
+				var PayloadClient = new Message
+				(
+					//client.Email,
+					"testwebpkl@gmail.com",
+					"Jadwal Interview Dengan Candidate",
+					new EmailVM
+					{
+						Sender_Alias = "HR Metrodata",
+						Interview_Action = "Client",
+						Tanggal = interviewData.Interview_Date,
+						Nama = client.FirstName + " " + client.LastName,
+						Project_Name = updateProject.Project_Name,
+						Jobs = updateProject.Required_Skill
+					}
+				);
+
+				_emailSender.SendEmailAsync(PayloadClient);
+
+
 
 				return 0;
 			}
@@ -114,7 +135,7 @@ namespace API.Repository.Data
 		public int RejectInterview(KeyVM key)
 		{
 			var entity = iContext.Interviews.Find(key.KeyInt);
-			if (entity != null)
+			if (entity != null && entity.Interview_Result == InterviewResult.Waiting)
 			{
 				entity.Interview_Result = InterviewResult.Rejected;
 				entity.Description = key.KeyStr;
