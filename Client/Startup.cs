@@ -36,6 +36,7 @@ namespace Client
 			services.AddHttpContextAccessor();
 			services.AddScoped<AccountRepository>();
 			services.AddScoped<InterviewRepository>();
+			services.AddScoped<ProjectRepository>();
 			services.AddScoped<Address>();
 
 			services.AddControllers().AddNewtonsoftJson(option => {

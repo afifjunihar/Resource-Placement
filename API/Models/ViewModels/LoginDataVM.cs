@@ -7,7 +7,8 @@ namespace API.Models.ViewModels
 {
 	public class LoginDataVM
 	{
-		public string EmailOrUsername { get; set; }
+		public string UserId { get; set; }
+		public string Fullname { get; set; }
 		public string[] Roles { get; set; }
 	}
 }

@@ -42,31 +42,9 @@ namespace Client.Controllers
 				return Json(new { Status = HttpStatusCode.NotFound , Message = jwtToken.Message } );
 			}
 
-
 			HttpContext.Session.SetString("JWToken", token);
-			//HttpContext.Session.SetString("Name", jwtHandler.GetName(token));
-			//HttpContext.Session.SetString("ProfilePicture", "assets/img/theme/user.png");
 
 			return Json(HttpStatusCode.OK);
 		}
-
-		//[HttpPost]
-		//[Route("/Login")]
-		//public async Task<IActionResult> Auth(LoginVM login)
-		//{
-		//	var jwtToken = await account.Auth(login);
-		//	var token = jwtToken.Token;
-
-		//	if (token == null)
-		//	{
-		//		return BadRequest(jwtToken.Message);
-		//	}
-
-		//	HttpContext.Session.SetString("JWToken", token);
-		//	//HttpContext.Session.SetString("Name", jwtHandler.GetName(token));
-		//	//HttpContext.Session.SetString("ProfilePicture", "assets/img/theme/user.png");
-
-		//	return Ok(jwtToken.Message);
-		//}
 	}
 }

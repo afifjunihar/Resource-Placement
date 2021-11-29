@@ -38,7 +38,7 @@ namespace API.Base
 			return Ok(result);
 		}
 
-		[HttpPatch("{Key}")]
+		[HttpPut("{Key}")]
 		public ActionResult<Entity> Update(Entity entity, Key key)
 		{
 			var result = repository.Update(entity, key);

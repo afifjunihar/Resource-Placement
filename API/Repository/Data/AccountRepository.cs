@@ -72,5 +72,37 @@ namespace API.Repository.Data
 				return result.ToArray();
 			}
 		}
+
+		public string GetFullName(LoginVM loginVM)
+		{
+			User emailExist = aContext.Users.Where(fn => fn.Email == loginVM.EmailOrUsername).FirstOrDefault();
+			Account usernameExist = aContext.Accounts.Where(fn => fn.Username == loginVM.EmailOrUsername).FirstOrDefault();
+
+			if (emailExist != null)
+			{
+				return emailExist.FirstName + " " + emailExist.LastName;
+			}
+			else
+			{
+				User dataUser = aContext.Users.Where(fn => fn.Account_Id == usernameExist.Account_Id).FirstOrDefault();
+				return dataUser.FirstName + " " + dataUser.LastName;
+			}
+		}
+
+		public string GetUserID(LoginVM loginVM)
+		{
+			User emailExist = aContext.Users.Where(fn => fn.Email == loginVM.EmailOrUsername).FirstOrDefault();
+			Account usernameExist = aContext.Accounts.Where(fn => fn.Username == loginVM.EmailOrUsername).FirstOrDefault();
+
+			if (emailExist != null)
+			{
+				return emailExist.User_Id;
+			}
+			else
+			{
+				User dataUser = aContext.Users.Where(fn => fn.Account_Id == usernameExist.Account_Id).FirstOrDefault();
+				return dataUser.User_Id;
+			}
+		}
 	}
 }

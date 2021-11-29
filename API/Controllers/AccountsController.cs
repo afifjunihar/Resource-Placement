@@ -44,18 +44,20 @@ namespace API.Controllers
 			// Implement JWT
 			var data = new LoginDataVM
 			{
-				EmailOrUsername = loginVM.EmailOrUsername,
+				UserId = account.GetUserID(loginVM),
+				Fullname = account.GetFullName(loginVM),
 				Roles = account.GetRole(loginVM)
 			};
 
 			var claims = new List<Claim>
 			{
-				new Claim("email/username", data.EmailOrUsername)
+				new Claim(ClaimTypes.Name, data.Fullname),
+				new Claim(ClaimTypes.Sid, data.UserId)
 			};
 
 			foreach (var item in data.Roles)
 			{
-				claims.Add(new Claim("roles", item.ToString()));
+				claims.Add(new Claim(ClaimTypes.Role, item.ToString()));;
 			}
 
 			var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));

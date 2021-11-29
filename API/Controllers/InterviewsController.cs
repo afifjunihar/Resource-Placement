@@ -32,7 +32,7 @@ namespace API.Controllers
 			return Ok(result);
 		}
 
-		[HttpPost]
+		[HttpPatch]
 		[Route("Accept")]
 		public ActionResult Accept(KeyVM key)
 		{
@@ -44,7 +44,7 @@ namespace API.Controllers
 			return BadRequest();
 		}
 
-		[HttpPost]
+		[HttpPatch]
 		[Route("Reject")]
 		public ActionResult Reject(KeyVM key)
 		{
