@@ -23,5 +23,21 @@ namespace Client.Controllers
             var result = project.GetProjectApplicant(entity);
             return Json(result);
         }
+        public async Task<JsonResult> ListProject()
+        {
+            var result = await project.Current();
+            return Json(result);
+        }
+        public async Task<JsonResult> ListOpenProject()
+        {
+            var result = await project.openProject();
+            return Json(result);
+        }
+
+        public async Task<JsonResult> ListClosedProject()
+        {
+            var result = await project.closedProject();
+            return Json(result);
+        }
     }
 }

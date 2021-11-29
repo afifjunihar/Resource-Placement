@@ -31,13 +31,26 @@ namespace Client.Repository.Data
         {
 
             List<GetListSkillVM> entities1 = new List<GetListSkillVM>();
-            using (var response = await httpClient.GetAsync(request + "Profile/ListSkill"))
+            using (var response = await httpClient.GetAsync(address.Link + "users/Profile/ListSkill"))
             {
                 string apiResponse = await response.Content.ReadAsStringAsync();
                 entities1 = JsonConvert.DeserializeObject<List<GetListSkillVM>>(apiResponse);
             }
             return entities1;
         }
+
+        public async Task<List<GetSkillVM>> GetSkill(string Id)
+        {
+            List<GetSkillVM> entities1 = new List<GetSkillVM>();
+
+            using (var response = await httpClient.GetAsync(address.Link + "users/Profile/Skill/" + Id))
+            {
+                string apiResponse = await response.Content.ReadAsStringAsync();
+                entities1 = JsonConvert.DeserializeObject<List<GetSkillVM>>(apiResponse);
+            }
+            return entities1;
+        }
+
         public HttpStatusCode AddSkill(AddSkillVM entity)
         {
             StringContent content = new StringContent(JsonConvert.SerializeObject(entity), Encoding.UTF8, "application/json");

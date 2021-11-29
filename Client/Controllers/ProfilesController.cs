@@ -22,21 +22,21 @@ namespace Client.Controllers
             return View();
         }
 
-        public JsonResult GetProfileClient()
+        public async Task<JsonResult> GetProfileClient()
         {
-            var result = profile.GetProfileClient();
+            var result = await profile.GetProfileClient();
             return Json(result);
         }
 
-        public JsonResult GetProfileCandidate()
+        public async Task<JsonResult> GetProfileCandidate()
         {
-            var result = profile.GetProfileCandidate();
+            var result = await profile.GetProfileCandidate();
             return Json(result);
         }
 
-        public JsonResult GetProfileTrainer()
+        public async Task<JsonResult> GetProfileTrainer()
         {
-            var result = profile.GetProfileTrainer();
+            var result = await profile.GetProfileTrainer();
             return Json(result);
         }
 

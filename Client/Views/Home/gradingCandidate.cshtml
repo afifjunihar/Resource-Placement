@@ -1,0 +1,118 @@
+﻿@{
+    Layout = "~/Views/Shared/Layout/DashboardLayout.cshtml";
+    ViewData["Title"] = "Resource Placemant";
+}
+
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800"> <i>Grading</i> Pegawai</h1>
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/Dashboard">Home</a></li>
+        <li class="breadcrumb-item">Candidate</li>
+        <li class="breadcrumb-item">Grading</li>
+    </ol>
+</div>
+
+
+<!--Content-->
+<div class="row mb-3">
+    <div class="col">
+        <div class="alert alert-light w-100" role="alert">
+            <h6><i class="fas fa-bullhorn"></i><b> Informasi...!!!</b></h6>
+                Menu ini digunakan untuk <i>Grading</i> pegawai.
+        </div>
+    </div>
+</div>
+<div class="card mb-4">
+    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+        <h4 class="m-0 font-weight-bold text-primary">Grading  </h4>
+    </div>
+    <div class="card-body">
+        <div class=" col">
+            <button type="button" class="btn ml-1 text-left btn-dark btn-lg" onclick="downloadExcel();"><i class="fa fa-file-excel-o"></i> Excel </button>
+            <button type="button" id="addScore" class="btn ml-1 text-left btn-success btn-lg" onclick="InputData();" data-toggle="modal" data-target="#formModal"><i class="fa fa-plus"></i> Masukan Nilai </button>
+        </div>
+        <table class="table align-items-center table-flush" id="listProject">
+            <thead class="thead-light">
+                <tr>
+                    <th>User Id</th>
+                    <th>FullName</th>
+                    <th>Phone</th>
+                    <th>Gender</th>
+                    <th>Nilai</th>
+                </tr>
+            </thead>
+            <tbody id="tblResult">
+                <tr>
+                    <td colspan="5" class="text-center"><span>Belum ada Candidate yang Tersedia</span></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="modal fade" id="formModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title w-100 text-center" id="exampleModalLongTitle" name="judul">Detail Score</h3>
+                <button type="button" class="close" onclick="ReloadDatatables();" data-dismiss="modal" aria-label="Submit">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <form class="needs-validation" id="inputForm" name="inputForm" novalidate>
+                    <div class="form-group form-row">
+                        <div class="col mb-3">
+                            <label for="userid">User Id</label>
+                            <input type="text" class="form-control" id="userid" name="userid" placeholder="User Id">
+                        </div>
+                    </div>
+                    <div class="form-group form-row">
+                        <div class="col mb-3">
+                            <label for="fundamental">Fundamental C#</label>
+                            <input type="text" class="form-control" id="fundamental" name="fundamental" placeholder="Fundamental C# Score">
+                        </div>
+                    </div>
+                    <div class="form-group form-row">
+                        <div class="col mb-3">
+                            <label for="backend">Back-End</label>
+                            <input type="text" class="form-control" id="backend" name="backend" placeholder="Back-End Score">
+                        </div>
+                    </div>
+                    <div class="form-group row mb-3">
+                        <div class="col">
+                            <label for="frontend">Front-End</label>
+                            <input type="text" class="form-control" id="frontend" name="frontend" placeholder="Front-End Score">
+                        </div>
+                    </div>
+                    <div class="form-group row mb-3">
+                        <div class="col">
+                            <label for="fullstack">Full-Stack</label>
+                            <input type="text" class="form-control" id="fullstack" name="fullstack" placeholder="Full-Stack Score">
+                        </div>
+                    </div>
+                </form>
+                <div class="modal-footer">
+                    <button type="button" id="btnsubmit" class="btn btn-primary" onclick="Validate();" hidden>Submit</button>
+                    <button type="button" class="btn btn-danger"  onclick="ReloadDatatables();" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Script{
+
+    <!-- Datatables Script-->
+    <script type="text/javascript" charset="utf8" src="~/vendor/datatables/jquery.dataTables.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.1/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.1/js/buttons.html5.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.2.1/dist/sweetalert2.all.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.min.js"></script>
+    <script type="text/javascript" src="~/js/gradingCandidate.js"></script>
+}

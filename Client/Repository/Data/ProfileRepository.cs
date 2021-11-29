@@ -50,14 +50,14 @@ namespace Client.Repository.Data
             }
             return entities1;
         }
-        public async Task<List<GetProfileVM>> GetProfileCandidate()
+        public async Task<List<GetCandidateProfileVM>> GetProfileCandidate()
         {
 
-            List<GetProfileVM> entities1 = new List<GetProfileVM>();
+            List<GetCandidateProfileVM> entities1 = new List<GetCandidateProfileVM>();
             using (var response = await httpClient.GetAsync(request + "CandidateProfile/"))
             {
                 string apiResponse = await response.Content.ReadAsStringAsync();
-                entities1 = JsonConvert.DeserializeObject<List<GetProfileVM>>(apiResponse);
+                entities1 = JsonConvert.DeserializeObject<List<GetCandidateProfileVM>>(apiResponse);
             }
             return entities1;
         }

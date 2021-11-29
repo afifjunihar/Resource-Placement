@@ -175,10 +175,10 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        [Route("Profile/Skill")]
-        public ActionResult GetProfile(KeyVM key)
+        [Route("Profile/Skill/{Id}")]
+        public ActionResult GetProfile(string Id)
         {
-            var result = user.CandidateSkill(key);
+            var result = user.CandidateSkill(Id);
             return Ok(result);
         }
 

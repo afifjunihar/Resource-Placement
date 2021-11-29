@@ -135,5 +135,60 @@ namespace API.Repository.Data
                 return getData;
             }         
         }
+
+        public dynamic openProject() 
+        {
+            var listProject = pContext.Projects.ToList();
+            var getData = from a in listProject
+                          where a.Status == Status.Open
+                          select new 
+                          {
+                              a.Project_Id,
+                              a.Project_Name,
+                              a.Capacity,
+                              a.Current_Capacity,
+                              a.Required_Skill,
+                              a.Status,
+                              a.Creator_Id
+                          };
+
+            int hitungData = getData.Count();
+            if (hitungData == 0)
+            {
+                string checkData = "Tidak ditemukan Data pada Database";
+                return checkData;
+            }
+            else
+            {
+                return getData;
+            }
+        }
+        public dynamic closedProject()
+        {
+            var listProject = pContext.Projects.ToList();
+            var getData = from a in listProject
+                          where a.Status == Status.Closed
+                          select new
+                          {
+                              a.Project_Id,
+                              a.Project_Name,
+                              a.Capacity,
+                              a.Current_Capacity,
+                              a.Required_Skill,
+                              a.Status,
+                              a.Creator_Id
+                          };
+
+            int hitungData = getData.Count();
+            if (hitungData == 0)
+            {
+                string checkData = "Tidak ditemukan Data pada Database";
+                return checkData;
+            }
+            else
+            {
+                return getData;
+            }
+        }
     }
 }

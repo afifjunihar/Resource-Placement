@@ -56,5 +56,22 @@ namespace API.Controllers
 			return BadRequest();
 		}
 
+
+		[HttpGet]
+		[Route("History/{Id}")]
+		public ActionResult History(string Id)
+		{
+			IEnumerable<object> result = interview.History(Id);
+			return Ok(result);
+		}
+
+		[HttpGet]
+		[Route("Current/{Id}")]
+		public ActionResult Current(string Id)
+		{
+			var result = interview.Current(Id);
+			return Ok(result);
+		}
+
 	}
 }

@@ -40,6 +40,21 @@ namespace API.Controllers
             return Ok(result);
         }
 
+        [HttpGet]
+        [Route("OpenProject")]
+        public ActionResult OpenProject()
+        {
+            var result = project.openProject();
+            return Ok(result);
+        }
+        [HttpGet]
+        [Route("ClosedProject")]
+        public ActionResult ClosedProject()
+        {
+            var result = project.closedProject();
+            return Ok(result);
+        }
+
 
     }
 }

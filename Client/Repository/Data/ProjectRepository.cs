@@ -39,5 +39,40 @@ namespace Client.Repository.Data
 
             return profile;
         }
+
+        public async Task<List<GetProjectVM>> Current()
+        {
+            List<GetProjectVM> entity = new List<GetProjectVM>();
+            using (var response = await httpClient.GetAsync(request))
+            {
+                string apiResponse = await response.Content.ReadAsStringAsync();
+                entity = JsonConvert.DeserializeObject<List<GetProjectVM>>(apiResponse);
+            }
+            return entity;
+        }
+
+        public async Task<List<GetProjectVM>> openProject()
+        {
+            List<GetProjectVM> entity = new List<GetProjectVM>();
+            using (var response = await httpClient.GetAsync(request + "OpenProject/"))
+            {
+                string apiResponse = await response.Content.ReadAsStringAsync();
+                entity = JsonConvert.DeserializeObject<List<GetProjectVM>>(apiResponse);
+            }
+            return entity;
+        }
+
+        public async Task<List<GetProjectVM>> closedProject()
+        {
+            List<GetProjectVM> entity = new List<GetProjectVM>();
+
+            using (var response = await httpClient.GetAsync(request  + "ClosedProject/"))
+            {
+                string apiResponse = await response.Content.ReadAsStringAsync();
+                entity = JsonConvert.DeserializeObject<List<GetProjectVM>>(apiResponse);
+            }
+            return entity;
+        }
+
     }
 }

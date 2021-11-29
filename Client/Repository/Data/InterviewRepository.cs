@@ -46,5 +46,17 @@ namespace Client.Repository.Data
             var result = httpClient.PostAsync(request + "Applicant/", content).Result;
             return result.StatusCode;
         }
+
+        public async Task<Object> Current(string id)
+        {
+            Object entity = null;
+
+            using (var response = await httpClient.GetAsync(request + "current/" + id))
+            {
+                string apiResponse = await response.Content.ReadAsStringAsync();
+                entity = JsonConvert.DeserializeObject<object>(apiResponse);
+            }
+            return entity;
+        }
     }
 }

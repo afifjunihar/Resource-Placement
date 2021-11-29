@@ -18,9 +18,15 @@ namespace Client.Controllers
             this.skill = repository;
         }
 
-        public JsonResult GetListSkill()
+        public async Task<JsonResult> GetListSkill()
         {
-            var result = skill.GetListSkill();
+            var result = await skill.GetListSkill();
+            return Json(result);
+        }
+
+        public async Task<JsonResult> Skill(string Id)
+        {
+            var result = await skill.GetSkill(Id);
             return Json(result);
         }
 

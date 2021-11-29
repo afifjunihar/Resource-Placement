@@ -31,7 +31,7 @@ namespace Client.Repository.Data
         public HttpStatusCode LupaPassword(KeyVM entity)
         {
             StringContent content = new StringContent(JsonConvert.SerializeObject(entity), Encoding.UTF8, "application/json");
-            var result = httpClient.PostAsync(request + "lupapassword/", content).Result;
+            var result = httpClient.PostAsync(address.Link + request + "lupapassword/", content).Result;
             return result.StatusCode;
         }
 

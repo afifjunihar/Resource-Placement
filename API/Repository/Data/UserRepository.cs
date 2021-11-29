@@ -160,9 +160,11 @@ namespace API.Repository.Data
             var listAccountRoles = uContext.AccountRoles.ToList();
             var listRoles = uContext.Roles.ToList();
             var getData = from a in listUser
-                          join b in listAccountRoles on a.Account_Id equals b.Account_Id
-                          join c in listRoles on b.Role_Id equals c.Role_Id 
-                          where c.Role_Id == 1                       
+                          join b in listAccountRoles on a.Account_Id equals b.Account_Id into table1
+
+                          from c in table1.ToList()
+                          join d in listRoles on c.Role_Id equals d.Role_Id 
+                          where d.Role_Id == 1                  
                           select new
                           {
                               a.User_Id,
@@ -171,7 +173,8 @@ namespace API.Repository.Data
                               a.Gender,
                               a.Phone,
                               a.User_Status,
-                              c.Role_Name
+                              d.Role_Name,
+                              a.Score_Status
                           };
 
             int hitungData = getData.Count();
@@ -278,7 +281,7 @@ namespace API.Repository.Data
                 return getData;
             }
         }
-        public dynamic CandidateSkill(KeyVM keyVM) 
+        public dynamic CandidateSkill(string keyVM) 
         {
 
             var listUser = uContext.Users.ToList();
@@ -287,7 +290,7 @@ namespace API.Repository.Data
             var getData = from a in listUser
                           join b in listSkillHandlers on a.User_Id equals b.User_Id
                           join c in listSKill on b.Skill_Id equals c.Skill_Id
-                          where a.User_Id == keyVM.KeyStr && a.User_Status == CandidateStatus.Free
+                          where a.User_Id == keyVM && a.Score_Status == isScore.Yes
                           orderby b.Score descending
                           select new
                           {
@@ -317,6 +320,7 @@ namespace API.Repository.Data
                           where c.Skill_Name == "Front-End"
                           select new
                           {
+                              a.User_Id,
                               Fullname = a.FirstName + " " + a.LastName,
                               FrontEnd = b.Score
                           };
@@ -327,6 +331,7 @@ namespace API.Repository.Data
                           where c.Skill_Name == "Back-End"
                           select new
                           {
+                              a.User_Id,
                               Fullname = a.FirstName + " " + a.LastName,
                               BackEnd = b.Score
                           };
@@ -346,6 +351,7 @@ namespace API.Repository.Data
                           where c.Skill_Name == "Fundamental C#"
                           select new
                           {
+                              a.User_Id,
                               Fullname = a.FirstName + " " + a.LastName,
                               Fundamental = b.Score
                           };
@@ -357,6 +363,7 @@ namespace API.Repository.Data
                           join d in ScoreFS on a.Fullname equals d.Fullname 
                           select new
                           {
+                              a.User_Id,
                               Fullname = a.Fullname,
                               FundamentalC = b.Fundamental,
                               BackEnd = a.BackEnd,

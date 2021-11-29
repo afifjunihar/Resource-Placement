@@ -38,20 +38,20 @@ namespace API.Controllers
         [HttpPost]
         public ActionResult<Entity> Post(Entity Entity)
         {
-            try
-            {
-                int result = repository.Insert(Entity);
-                return Ok(new { status = HttpStatusCode.OK, message = $"Berhasil menambah data", result });
+            int result = repository.Insert(Entity);
+            return Ok(new { status = HttpStatusCode.OK, message = $"Berhasil menambah data", result });
+            //try
+            //{
 
-            }
-            catch (Microsoft.EntityFrameworkCore.DbUpdateException)
-            {
-                return BadRequest(new
-                {
-                    status = HttpStatusCode.BadRequest,
-                    message = "Gagal menambahkan data, Primary Key sudah terdaftar"
-                });
-            }
+            //}
+            //catch (Microsoft.EntityFrameworkCore.DbUpdateException)
+            //{
+            //    return BadRequest(new
+            //    {
+            //        status = HttpStatusCode.BadRequest,
+            //        message = "Gagal menambahkan data, Primary Key sudah terdaftar"
+            //    });
+            //}
 
         }
 

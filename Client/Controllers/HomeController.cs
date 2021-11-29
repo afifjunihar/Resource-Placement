@@ -22,18 +22,63 @@ namespace Client.Controllers
 		{
 			return View();
 		}
+		public IActionResult notfound()
+		{
+			return View();
+		}
+		public IActionResult unauthorized()
+		{
+			return View();
+		}
 
 		public IActionResult Privacy()
 		{
 			return View();
 		}
 
-		public IActionResult Dashboard()
+		public IActionResult candidateDashboard()
 		{
 			return View();
 		}
 
 		public IActionResult Login()
+		{
+			return View();
+		}
+
+
+		public IActionResult addCandidate()
+		{
+			return View();
+		}
+
+		public IActionResult addTrainer()
+		{
+			return View();
+		}
+		public IActionResult addClient()
+		{
+			return View();
+		}
+		public IActionResult ListProject()
+		{
+			return View();
+		}
+
+		public IActionResult openProject()
+		{
+			return View();
+		}
+		public IActionResult closedProject()
+		{
+			return View();
+		}
+		public IActionResult gradingCandidate()
+		{
+			return View();
+		}
+
+		public IActionResult aspekPenilaian()
 		{
 			return View();
 		}

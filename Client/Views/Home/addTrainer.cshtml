@@ -1,0 +1,96 @@
+﻿@{
+    Layout = "~/Views/Shared/Layout/DashboardLayout.cshtml";
+    ViewData["Title"] = "Resource Placemant";
+}
+
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800"> Registrasi Trainer</h1>
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/Dashboard">Home</a></li>
+        <li class="breadcrumb-item">Account</li>
+        <li class="breadcrumb-item">Add Trainer</li>
+    </ol>
+</div>
+
+<div class="card mb-4">
+    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+        <h6 class="m-0 font-weight-bold text-primary">Add Trainer</h6>
+    </div>
+    <div class="card-body">
+        <form class="needs-validation" id="inputForm" name="inputForm" novalidate>
+            <div class="form-row form-group">
+                <div class="col m-auto">
+                    <label for="inputUserId">User</label>
+                    <input class="form-control input" type="text" id="inputUserId" name="inputUserId" placeholder="User Id">
+                </div>
+            </div>
+            <div class="form-row form-group mb-3">
+                <div class="col ml-auto">
+                    <label for="firstName">Nama Depan</label>
+                    <input class="form-control input" type="text" id="firstName" name="firstName" placeholder="Nama Depan">
+                </div>
+                <div class="col ml-auto">
+                    <label for="lastName">Nama Belakang</label>
+                    <input class="form-control input" type="text" id="lastName" name="lastName" placeholder="Nama Belakang">
+                </div>
+            </div>
+            <div class="form-row form-group">
+                <label for="inputEmail">Email</label>
+                <input type="email" class="form-control input" id="inputEmail" name="inputEmail" aria-describedby="emailHelp" placeholder="Masukan email">
+                <small id="emailHelp" class="form-text text-muted">
+                    Kami menjaga kerahasiaan Email Anda
+                </small>
+            </div>
+
+            <div class="form-group">
+                <label for="inputPhone">No <i>Handphone</i> </label>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">+62</div>
+                    </div>
+                    <input type="text" class="form-control input" id="inputPhone" name="inputPhone" placeholder="Handphone ">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="gender">Gender</label>
+                <select class="form-control" id="gender" name="gender" required>
+                    <option value="">Choose...</option>
+                    <option value="Male">Laki-Laki</option>
+                    <option value="Female">Perempuan</option>
+                </select>
+            </div>
+
+            <div class="form-group " hidden>
+                <div class="input-group">
+                    <input type="text" class="form-control" id="userStatus" name="userStatus" value="Free">
+                </div>
+            </div>
+
+            <div class="form-group " hidden>
+                <div class="input-group">
+                    <input type="text" class="form-control" id="checkUser" name="checkUser" value="Trainer">
+                </div>
+            </div>
+
+            <div class="form-row form-group ">
+                <label for="username">Username</label>
+                <div class="input-group">
+                    <input type="text" class="form-control input" id="username" name="username" placeholder="username">
+                </div>
+            </div>
+
+            <div class="form-row form-group">
+                <label for="password">Password</label>
+                <input type="password" class="form-control input" id="password" name="password" placeholder="Password">
+            </div>
+        </form>
+        <button type="button" id="btnsubmit" class="btn btn-primary" onclick="Validate();">Submit</button>
+    </div>
+</div>
+
+@section Script{
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.2.1/dist/sweetalert2.all.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.min.js"></script>
+    <script type="text/javascript" src="~/js/Register.js"></script>
+}

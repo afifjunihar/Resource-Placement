@@ -34,5 +34,11 @@ namespace Client.Controllers
             var result = interview.Application(entity);
             return Json(result);
         }
+
+        public async Task<JsonResult> Current(string id)
+        {
+            var result = await interview.Current(id);
+            return Json(result);
+        }
     }
 }
