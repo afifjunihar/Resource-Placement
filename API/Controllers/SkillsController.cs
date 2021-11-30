@@ -26,7 +26,7 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        [Route("AddSkills")]
+        [Route("Add")]
         public ActionResult AddCandidatesSkill(AddSkillVM addSkill)
         {
             var result = skill.AddSkill(addSkill);
@@ -35,6 +35,21 @@ namespace API.Controllers
                 return Ok();
             }
             else 
+            {
+                return BadRequest();
+            }
+        }
+
+        [HttpPut]
+        [Route("Update")]
+        public ActionResult UpdateCandidatesSkill(AddSkillVM addSkill)
+        {
+            var result = skill.UpdateSkill(addSkill);
+            if (result == 0)
+            {
+                return Ok();
+            }
+            else
             {
                 return BadRequest();
             }

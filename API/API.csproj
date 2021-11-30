@@ -13,16 +13,15 @@
     <PackageReference Include="BCrypt.Net-Core" Version="1.6.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.21" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.21" />
+    <PackageReference Include="Microsoft.AspNetCore.Proxy" Version="0.2.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.21" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="3.1.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.21" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.21">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Migrations\" />
+    <PackageReference Include="NETCore.MailKit" Version="2.0.3" />
   </ItemGroup>
 
 

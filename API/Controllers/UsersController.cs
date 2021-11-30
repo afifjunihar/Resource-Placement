@@ -160,7 +160,7 @@ namespace API.Controllers
 
         [HttpGet]
         [Route("Profile/{UserId}")]
-        public ActionResult GetProfile(string UserId)
+        public ActionResult GetProfileUser(string UserId)
         {
             try
             {
@@ -174,5 +174,28 @@ namespace API.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("Profile/Skill/{Id}")]
+        public ActionResult GetProfile(string Id)
+        {
+            var result = user.CandidateSkill(Id);
+            return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("Profile/ListSkill")]
+        public ActionResult ListCandidate()
+        {
+            var result = user.CandidateSkill();
+            return Ok(result);
+        }
+
+        [HttpPost]
+        [Route("lupapassword")]
+        public ActionResult lupapassword(KeyVM key)
+        {
+            var result = user.lupaPassword(key);
+            return Ok(result);
+        }
     }
 }

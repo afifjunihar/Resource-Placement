@@ -8,7 +8,9 @@ namespace API.Models.ViewModels
     public class AddSkillVM
     {
         public string User_Id { get; set; }
-        public int Skill_Id { get; set; }
-        public int Score_skill { get; set; }
+        public int fundamentalCScore { get; set; }
+        public int BackEndScore { get; set; }
+        public int FrontEndScore { get; set; }
+        public int FullstackScore { get; set; }
     }
 }

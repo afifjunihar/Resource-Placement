@@ -1,12 +1,20 @@
+using Client.Base.Urls;
+using Client.Repository.Data;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json.Converters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Client
@@ -23,8 +31,48 @@ namespace Client
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
 		{
+
 			services.AddControllersWithViews();
-		}
+			services.AddSession();
+			services.AddHttpContextAccessor();
+
+			services.AddScoped<Address>();
+			services.AddScoped<RegisterRepository>();
+			services.AddScoped<AssignProjectRepository>();
+			services.AddScoped<InterviewRepository>();
+			services.AddScoped<LupaPasswordRepository>();
+			services.AddScoped<ProfileRepository>();
+			services.AddScoped<ProjectRepository>();
+			services.AddScoped<AccountRepository>();
+			services.AddScoped<SkillRepository>();
+
+			services.AddControllers().AddNewtonsoftJson(option => {
+				option.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+				option.SerializerSettings.Converters.Add(new StringEnumConverter()); // Make Enum To String
+			});
+
+			//JWT
+			services.AddAuthentication(auth =>
+            {
+                auth.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                auth.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(options =>
+            {
+                options.RequireHttpsMetadata = false;
+                options.SaveToken = true;
+                options.TokenValidationParameters = new TokenValidationParameters()
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = false,
+                    ValidAudience = Configuration["Jwt:Audience"],
+                    ValidIssuer = Configuration["Jwt:Issuer"],
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"])),
+                    ValidateLifetime = true,
+                    ClockSkew = TimeSpan.Zero
+                };
+            });
+
+        }
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
 		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -43,8 +91,34 @@ namespace Client
 			app.UseStaticFiles();
 
 			app.UseRouting();
+			app.UseSession();
 
+			app.Use(async (context, next) =>
+			{
+				var JWToken = context.Session.GetString("JWToken");
+				if (!string.IsNullOrEmpty(JWToken))
+				{
+					context.Request.Headers.Add("Authorization", "Bearer " + JWToken);
+				}
+				await next();
+			});
+
+			app.UseAuthentication();
 			app.UseAuthorization();
+
+			app.UseStatusCodePages(async context => {
+				var request = context.HttpContext.Request;
+				var response = context.HttpContext.Response;
+
+				if (response.StatusCode.Equals((int)HttpStatusCode.Unauthorized))
+				{
+					response.Redirect("/home/unauthorized");
+				}
+				else if (response.StatusCode.Equals((int)HttpStatusCode.NotFound))
+				{
+					response.Redirect("/home/notfound");
+				}
+			});
 
 			app.UseEndpoints(endpoints =>
 			{

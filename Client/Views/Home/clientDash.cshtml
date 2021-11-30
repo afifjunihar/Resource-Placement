@@ -1,0 +1,211 @@
+﻿@{
+	Layout = "~/Views/Shared/Layout/DashboardLayout.cshtml";
+	ViewData["Title"] = "Resource Placemant - Client";
+}
+
+@section Style{
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/jszip-2.5.0/dt-1.11.3/b-2.0.1/b-colvis-2.0.1/b-html5-2.0.1/b-print-2.0.1/datatables.min.css" />
+}
+
+<!-- Breadcrumb-->
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">My Project</h1>
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="./">Home</a></li>
+        @*
+        <li class="breadcrumb-item">Client</li>*@
+        <li class="breadcrumb-item active">My Project</li>
+    </ol>
+</div>
+
+<!--Content-->
+<main class="mt-5">
+    <div class="row align-content-center d-flex">
+        <!-- DataTable with Hover -->
+        <div class="col-lg-12">
+            <div class="card mb-4">
+                <div class="card-header py-3 d-flex flex-row justify-content-between">
+                    <div class="col-xl-3 col-md-12">
+                        <button class="btn btn-primary w-100" data-toggle="modal" data-target="#addProject">
+                            <span class="icon">
+                                <i class="fas fa-plus"></i>&nbsp;&nbsp;
+                            </span>
+                            <span class="text">New Project</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="table-responsive p-4">
+                    <table class="table align-items-center table-flush table-hover table-bordered" id="dataTableHover">
+                        <thead class="thead-light">
+                            <tr>
+                                <th>No</th>
+                                <th>Name</th>
+                                <th>Required Skill</th>
+                                <th>Capacity</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+
+<!-- Modal Add -->
+<div class="modal fade" id="addProject" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Create new project</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form class="needs-validation" id="formCreate" novalidate>
+                    <div class="form-row">
+                        <div class="col-md-8 mb-3">
+                            <label for="projetName">Project Name</label>
+                            <input type="text" class="form-control" id="projetName" name="project_Name" required>
+                            <div class="invalid-feedback">
+                                Field harus di isi
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="capacity">Capacity</label>
+                            <div class="input-group mb-3">
+                                <input type="number" class="form-control" min="1" value="1" id="capacity" name="capacity">
+                                <div class="input-group-append">
+                                    <span class="input-group-text" id="basic-addon2">Orang</span>
+                                </div>
+                            </div>
+                            <div class="invalid-feedback">
+                                Field harus di isi
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-md-6 mb-3">
+                            <label for="reqSkill">Required Skill</label>
+                            <select class="custom-select" id="reqSkill" name="required_Skill" required>
+                                <option selected disabled value="">Choose...</option>
+                                <option value="Frontend">Frontend</option>
+                                <option value="Backend">Backend</option>
+                                <option value="Fullstack">FullStack</option>
+                            </select>
+                            <div class="invalid-feedback">
+                                Pilih required skill untuk project
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="status">Status</label>
+                            <input type="text" class="form-control" id="status" name="status" value="Open" readonly required>
+                            <div class="invalid-feedback">
+                                Field harus di isi
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="invalidCheck" required>
+                            <label class="form-check-label" for="invalidCheck">
+                                Menyetujui syarat dan ketentuan perusahaan
+                            </label>
+                            <div class="invalid-feedback">
+                                Anda harus setuju.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group" hidden>
+                        <input type="number" class="form-control" value="0" name="current_Capacity" id="curCap">
+                        <input type="text" class="form-control" value="CN001" name="creator_Id" id="creatorID">
+                    </div>
+                    <hr />
+                    <button class="btn btn-primary w-50 mb-2" type="submit">Create</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Edit -->
+<div class="modal fade" id="editProject" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editLabel">Update project</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form class="needs-validation-two" id="formUpdate" novalidate>
+                    <div class="form-row">
+                        <div class="col-md-8 mb-3">
+                            <label for="editName">Project Name</label>
+                            <input type="text" class="form-control" id="editName" name="project_Name" required>
+                            <div class="invalid-feedback">
+                                Field harus di isi
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="capacity">Capacity</label>
+                            <div class="input-group mb-3">
+                                <input type="number" class="form-control" id="editCapacity" name="capacity">
+                                <div class="input-group-append">
+                                    <span class="input-group-text" id="basic-addon2">Orang</span>
+                                </div>
+                            </div>
+                            <div class="invalid-feedback">
+                                Field harus di isi
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-md-6 mb-3">
+                            <label for="reqSkill">Required Skill</label>
+                            <input type="text" class="form-control" id="editSkill" name="required_Skill" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="editStatus">Status</label>
+                            <select class="custom-select" id="editStatus" name="status" required>
+                                <option value="Open">Open</option>
+                                <option value="Closed">Closed</option>
+                            </select>
+                            <div class="invalid-feedback">
+                                Pilih perubahan status
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="editCheck" required>
+                            <label class="form-check-label" for="invalidCheck">
+                                Menyetujui syarat dan ketentuan perusahaan
+                            </label>
+                            <div class="invalid-feedback">
+                                Anda harus setuju.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group" hidden>
+                        <input type="number" class="form-control" value="0" name="current_Capacity" id="curCap">
+                        <input type="text" class="form-control" value="CN001" name="creator_Id" id="creatorID">
+                    </div>
+                    <hr />
+                    <button class="btn btn-primary w-50 mb-2" type="submit">Create</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Script {
+<script src="https://cdn.datatables.net/v/dt/dt-1.11.3/b-2.0.1/b-colvis-2.0.1/datatables.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.9/dist/sweetalert2.all.min.js"></script>
+<script src="~/js/client-project.js"></script>
+}

@@ -1,0 +1,171 @@
+﻿@{
+    Layout = "~/Views/Shared/Layout/DashboardLayout.cshtml";
+    ViewData["Title"] = "Detail";
+
+}
+
+@section Style{
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/jszip-2.5.0/dt-1.11.3/b-2.0.1/b-colvis-2.0.1/b-html5-2.0.1/b-print-2.0.1/datatables.min.css" />
+}
+
+<!-- Breadcrumb-->
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <a href="/client" class="btn btn-light btn-icon-split">
+        <span class="icon text-gray-600">
+            <i class="fas fa-arrow-left"></i>
+        </span>
+        <span class="text">Kembali</span>
+    </a>
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">Home</a></li>
+        <li class="breadcrumb-item"><a href="/client">MyProject</a></li>
+        <li class="breadcrumb-item active">Details</li>
+    </ol>
+</div>
+
+<!--Content-->
+<h5 class="text-center font-weight-bold my-3" id="projectName">Project Name</h5>
+
+<div class="row mb-3 mt-5" id="card-content">
+    <!-- Project Stats -->
+    <div class="col-xl-4 col-md-6 mb-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col ml-2">
+                        <div class="text-xs font-weight-bold text-uppercase mb-1">Project Status</div>
+                        <div class="h4 mb-0 text-primary font-weight-bold text-uppercase">Open</div>
+                        <div class="mt-2 mb-0 text-muted text-xs">
+                            <span class="h6 text-primary font-weight-bold mr-2"><i class="fa fa-users mr-2"></i> 2 / 3</span>
+                        </div>
+                    </div>
+                    <div class="col-auto mr-4">
+                        <i class="fab fa-stack-exchange fa-2x text-primary"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Project Creator -->
+    <div class="col-xl-4 col-md-6 mb-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col ml-2">
+                        <div class="text-xs font-weight-bold text-uppercase mb-1">Create By</div>
+                        <div class="h4 mb-0 font-weight-bold">Mahfudh Syauqi</div>
+                        <div class="mt-2 mb-0 text-muted text-xs">
+                            <span class="h6 font-weight-bold mr-2"><i class="fa fa-feather-alt text-info mr-2"></i>Client</span>
+                        </div>
+                    </div>
+                    <div class="col-auto mr-4">
+                        <i class="fa fa-user-cog fa-2x text-info"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Project Skill -->
+    <div class="col-xl-4 col-md-6 mb-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col ml-2">
+                        <div class="text-xs font-weight-bold text-uppercase mb-1">Required Skill</div>
+                        <div class="h4 mb-0 font-weight-bold">FullStack</div>
+                        <div class="mt-2 mb-0 text-muted text-xs">
+                            <span class="h6 font-weight-bold mr-2"><i class="fa fa-cog text-warning mr-2"></i>Development</span>
+                        </div>
+                    </div>
+                    <div class="col-auto mr-4">
+                        <i class="fa fa-crown fa-2x text-warning"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mb-3">
+    <!-- Invoice Example -->
+    <div class="col-xl-12 col-lg-12 mb-4">
+        <div class="card">
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">Project Handler</h6>
+            </div>
+            <div class="table-responsive p-4">
+                <table class="table align-items-center table-flush table-hover table-bordered" id="tbl-candidate">
+                    <thead class="thead-light">
+                        <tr>
+                            <th>#</th>
+                            <th>Candidate Name</th>
+                            <th>Grade</th>
+                            <th>Jadwal Interview</th>
+                            <th>Jam</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tblResult">
+                        <tr class="text-center">
+                            <td colspan="6"><b>Candidate belum ada</b></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="card-footer"></div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- Modal Accept -->
+<div class="modal fade" id="accCan" tabindex="-1">
+    <div class="modal-dialog modal-sm modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Accept Candidate ?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-danger" data-dismiss="modal">No</button>
+                <button type="button" class="btn btn-primary" id="accBtn">Yes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Reject -->
+<div class="modal fade" id="rjCan" tabindex="-1">
+    <div class="modal-dialog modal-sm modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Reject Candidate ?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-0">
+                    <textarea rows="3" class="form-control" id="alasan" placeholder="Tolong berikan alasan penolakan"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">No</button>
+                <button type="button" class="btn btn-danger" id="rjBtn">Yes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Script {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.9/dist/sweetalert2.all.min.js"></script>
+    <script src="https://cdn.datatables.net/v/dt/dt-1.11.3/b-2.0.1/b-colvis-2.0.1/datatables.min.js"></script>
+    <script>
+		const projectID = @ViewBag.encodeID;
+    </script>
+    <script src="~/js/project.js"></script>
+}

@@ -19,12 +19,12 @@ namespace API.Models
 		public string Phone { get; set; }
 		public Gender Gender { get; set; }
 		public CandidateStatus User_Status { get; set; }
+		public isScore Score_Status { get; set; }
 		public int Account_Id { get; set; }
 
 
 		[ForeignKey("Manager_Id")]
 		public string Manager_Id { get; set; }
-
 
 		[JsonIgnore]
 		[ForeignKey("Account_Id")]
@@ -35,6 +35,10 @@ namespace API.Models
 
 		[JsonIgnore]
 		public virtual ICollection<Interview> Interview { get; set; }
+
+		[JsonIgnore]
+		public virtual ICollection<Project> Project { get; set; }
+
 
 	}
 
@@ -49,6 +53,12 @@ namespace API.Models
 		Free,
 		Hired,
 		OnProcess
+	}
+
+	public enum isScore
+	{
+		No,
+		Yes
 	}
 
 }

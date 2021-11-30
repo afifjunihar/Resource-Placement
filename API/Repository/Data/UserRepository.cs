@@ -1,20 +1,27 @@
 ﻿using API.Context;
 using API.Hashing_Password;
+using API.Library;
+using API.Library.Email;
 using API.Models;
 using API.Models.ViewModels;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
+
 
 namespace API.Repository.Data
 {
     public class UserRepository : GeneralRepository<ResourceContext, User, string>
     {
         private readonly ResourceContext uContext;
-        public UserRepository(ResourceContext uContext) : base(uContext)
+        private readonly IEmailSender _emailSender;
+        public UserRepository(ResourceContext uContext, IEmailSender emailSender) : base(uContext)
         {
             this.uContext = uContext;
+            this._emailSender = emailSender;
         }
 
         public int Register(RegisterVM registerVM) 
@@ -38,10 +45,10 @@ namespace API.Repository.Data
             {
                 return 4;
             }
-            else if (registerVM.Manager_Id == string.Empty)
-            {
-                return 4;
-            }
+            //else if (registerVM.Manager_Id == null || registerVM.Manager_Id == string.Empty)
+            //{
+            //    return 5;
+            //}
             else
             { 
               var user = new User
@@ -53,7 +60,7 @@ namespace API.Repository.Data
                     Phone = registerVM.Phone,
                     Gender = registerVM.Gender,
                     User_Status = registerVM.User_Status,
-                    Manager_Id = registerVM.Manager_Id,
+                    Manager_Id = "M0001",
                     Account = new Account
                     {
                             Username = registerVM.Username,
@@ -119,7 +126,11 @@ namespace API.Repository.Data
         public object Profile(string UserId) 
         {
             var listUser = uContext.Users.ToList();
+            var listAccountRoles = uContext.AccountRoles.ToList();
+            var listRoles = uContext.Roles.ToList();
             var getData = from a in listUser
+                          join b in listAccountRoles on a.Account_Id equals b.Account_Id
+                          join c in listRoles on b.Role_Id equals c.Role_Id
                           where a.User_Id == UserId
                           select new
                           {
@@ -128,7 +139,8 @@ namespace API.Repository.Data
                               a.Email,
                               a.Gender,
                               a.Phone,
-                              a.User_Status
+                              a.User_Status,
+                              c.Role_Name
                           };
 
             int hitungData = getData.Count();
@@ -148,9 +160,11 @@ namespace API.Repository.Data
             var listAccountRoles = uContext.AccountRoles.ToList();
             var listRoles = uContext.Roles.ToList();
             var getData = from a in listUser
-                          join b in listAccountRoles on a.Account_Id equals b.Account_Id
-                          join c in listRoles on b.Role_Id equals c.Role_Id 
-                          where c.Role_Id == 1                        
+                          join b in listAccountRoles on a.Account_Id equals b.Account_Id into table1
+
+                          from c in table1.ToList()
+                          join d in listRoles on c.Role_Id equals d.Role_Id 
+                          where d.Role_Id == 1                  
                           select new
                           {
                               a.User_Id,
@@ -158,7 +172,9 @@ namespace API.Repository.Data
                               a.Email,
                               a.Gender,
                               a.Phone,
-                              a.User_Status        
+                              a.User_Status,
+                              d.Role_Name,
+                              a.Score_Status
                           };
 
             int hitungData = getData.Count();
@@ -188,7 +204,8 @@ namespace API.Repository.Data
                               a.Email,
                               a.Gender,
                               a.Phone,
-                              a.User_Status
+                              User_Status = "Manager",
+                              c.Role_Name
                           };
 
             int hitungData = getData.Count();
@@ -218,7 +235,8 @@ namespace API.Repository.Data
                               a.Email,
                               a.Gender,
                               a.Phone,
-                              a.User_Status
+                              User_Status ="Trainer",
+                              c.Role_Name
                           };
 
             int hitungData = getData.Count();
@@ -248,7 +266,8 @@ namespace API.Repository.Data
                               a.Email,
                               a.Gender,
                               a.Phone,
-                              a.User_Status
+                              User_Status ="Client",
+                              c.Role_Name
                           };
 
             int hitungData = getData.Count();
@@ -262,7 +281,178 @@ namespace API.Repository.Data
                 return getData;
             }
         }
+        public dynamic CandidateSkill(string keyVM) 
+        {
 
+            var listUser = uContext.Users.ToList();
+            var listSkillHandlers = uContext.SkillHandlers.ToList();
+            var listSKill = uContext.Skills.ToList();
+            var getData = from a in listUser
+                          join b in listSkillHandlers on a.User_Id equals b.User_Id
+                          join c in listSKill on b.Skill_Id equals c.Skill_Id
+                          where a.User_Id == keyVM && a.Score_Status == isScore.Yes
+                          orderby b.Score descending
+                          select new
+                          {
+                             c.Skill_Name,
+                             b.Score
+                          };
+
+            int hitungData = getData.Count();
+            if (hitungData == 0)
+            {
+                string checkData = "Tidak ditemukan Data pada Database";
+                return checkData;
+            }
+            else
+            {
+                return getData;
+            }
+        }
+        public dynamic CandidateSkill() 
+        {
+            var listUser = uContext.Users.ToList();
+            var listSkillHandlers = uContext.SkillHandlers.ToList();
+            var listSKill = uContext.Skills.ToList();
+            var ScoreFE = from a in listUser
+                          join b in listSkillHandlers on a.User_Id equals b.User_Id
+                          join c in listSKill on b.Skill_Id equals c.Skill_Id
+                          where c.Skill_Name == "Front-End"
+                          select new
+                          {
+                              a.User_Id,
+                              Fullname = a.FirstName + " " + a.LastName,
+                              FrontEnd = b.Score
+                          };
+
+            var ScoreBE = from a in listUser
+                          join b in listSkillHandlers on a.User_Id equals b.User_Id
+                          join c in listSKill on b.Skill_Id equals c.Skill_Id
+                          where c.Skill_Name == "Back-End"
+                          select new
+                          {
+                              a.User_Id,
+                              Fullname = a.FirstName + " " + a.LastName,
+                              BackEnd = b.Score
+                          };
+
+            var ScoreFS = from a in listUser
+                          join b in listSkillHandlers on a.User_Id equals b.User_Id
+                          join c in listSKill on b.Skill_Id equals c.Skill_Id
+                          where c.Skill_Name == "Full-Stack"
+                          select new
+                          {
+                              Fullname = a.FirstName + " " + a.LastName,
+                              FullStack = b.Score
+                          };
+            var ScoreFC = from a in listUser
+                          join b in listSkillHandlers on a.User_Id equals b.User_Id
+                          join c in listSKill on b.Skill_Id equals c.Skill_Id
+                          where c.Skill_Name == "Fundamental C#"
+                          select new
+                          {
+                              a.User_Id,
+                              Fullname = a.FirstName + " " + a.LastName,
+                              Fundamental = b.Score
+                          };
+
+
+            var getData = from a in ScoreBE
+                          join b in ScoreFC on a.Fullname equals b.Fullname 
+                          join c in ScoreFE on a.Fullname equals c.Fullname
+                          join d in ScoreFS on a.Fullname equals d.Fullname 
+                          select new
+                          {
+                              a.User_Id,
+                              Fullname = a.Fullname,
+                              FundamentalC = b.Fundamental,
+                              BackEnd = a.BackEnd,
+                              FrontEnd = c.FrontEnd,
+                              FullStack = d.FullStack,
+                              score = (b.Fundamental + c.FrontEnd + d.FullStack + a.BackEnd)/4 
+                          }; 
+
+            int hitungData = getData.Count();
+            if (hitungData == 0)
+            {
+                string checkData = "Tidak ditemukan Data pada Database";
+                return checkData;
+            }
+            else
+            {
+                return getData;
+            }
+        }
+
+        public int lupaPassword(KeyVM key) 
+        {
+            var entitybyEmail  = uContext.Users.Where(p => p.Email == key.KeyStr).FirstOrDefault();          
+            var entitybyUname = uContext.Accounts.Where(p => p.Username == key.KeyStr).FirstOrDefault();
+
+            if (entitybyEmail != null)
+            {
+                string password = Password.Generate(15, 3);
+                var User = uContext.Users.Where(p => p.Account_Id == entitybyEmail.Account_Id).FirstOrDefault();
+
+                // Send Email
+                var Payload = new Message
+                (
+                   //updateUser.Email,
+                   "afifjunihar@gmail.com",
+                    "Lupa Password",
+                    new EmailVM
+                    {
+                        Sender_Alias = "Admin Metrodata",
+                        Action = "Reset Password",
+                        Nama = entitybyEmail.FirstName + " " + entitybyEmail.LastName,     
+                        Refresh_Password = password
+                    }
+                );
+                _emailSender.SendEmailAsync(Payload);
+                // End of Send Email  
+
+                Account Account = uContext.Accounts.Find(entitybyEmail.Account_Id);
+                Account.Password = Hashing.HashPassword(password);
+                uContext.Entry(Account).State = EntityState.Modified;
+                uContext.SaveChanges();              
+                return 0;
+            }
+
+            else if (entitybyUname != null)
+            {
+                string password = Password.Generate(15, 3);
+                var User = uContext.Users.Where(p => p.Account_Id == entitybyUname.Account_Id).FirstOrDefault();
+
+                // Send Email
+                var Payload = new Message
+                (
+                    //updateUser.Email,
+                    "afifjunihar@gmail.com",
+                    "Lupa Password",
+                    new EmailVM
+                    {
+                        Sender_Alias = "Admin Metrodata",
+                        Nama = User.FirstName + " " + User.LastName,                
+                        Action = "Reset Password",
+                        Refresh_Password = password
+                    }
+                );
+                _emailSender.SendEmailAsync(Payload);
+                // End of Send Email
+
+
+                Account Account = uContext.Accounts.Find(User.Account_Id);
+                Account.Password = Hashing.HashPassword(password);
+                uContext.Entry(Account).State = EntityState.Modified;
+                uContext.SaveChanges();
+                return 0;
+            } 
+            
+            else
+            {
+                return 1;
+            }
+        }
 
     }
 }

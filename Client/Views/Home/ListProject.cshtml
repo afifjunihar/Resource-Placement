@@ -1,0 +1,65 @@
+﻿@{
+    Layout = "~/Views/Shared/Layout/DashboardLayout.cshtml";
+    ViewData["Title"] = "Resource Placemant";
+}
+
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">Project List</h1>
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/Dashboard">Home</a></li>
+        <li class="breadcrumb-item">Project</li>
+        <li class="breadcrumb-item">List Project</li>
+    </ol>
+</div>
+
+<!--Content-->
+<div class="row mb-3">
+    <div class="col">
+        <div class="alert alert-light w-100" role="alert">
+            <h6><i class="fas fa-bullhorn"></i><b> Informasi...!!!</b></h6>
+            Untuk Client yang Projectnya sudah tercantum, harap pastikan kebutuhan yang diberikan sudah sesuai.
+        </div>
+    </div>
+</div>
+
+<div class="card mb-4">
+    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+        <h6 class="m-0 font-weight-bold text-primary">Project List</h6>
+    </div>
+    <div class="card-body">
+        <button type="button" class="btn ml-1 text-left btn-dark btn-lg" onclick="downloadExcel();"><i class="fa fa-file-excel-o"></i> <span>Download Data</span> </button>
+        <table class="table align-items-center table-flush" id="listProject">
+            <thead class="thead-light">
+                <tr>
+                    <th>#</th>
+                    <th>Client_Id</th>
+                    <th>Project</th>
+                    <th>Kapasitas</th>
+                    <th>Kapasitas Terisi</th>
+                    <th>Reqire Skill</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody id="tblResult">
+                <tr>
+                    <td colspan="5" class="text-center"><span>Belum ada Project yang Tersedia</span></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Script{
+
+    <!-- Datatables Script-->
+    <script type="text/javascript" charset="utf8" src="~/vendor/datatables/jquery.dataTables.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.1/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.0.1/js/buttons.html5.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.2.1/dist/sweetalert2.all.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.min.js"></script>
+    <script type="text/javascript" src="~/js/ListProject.js"></script>
+}
