@@ -1,4 +1,11 @@
-﻿<!DOCTYPE html>
+﻿
+@using System.Security.Claims;
+@using API.Library;
+@{
+    string fullname = ((ClaimsIdentity)User.Identity).GetName();
+}
+
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -18,6 +25,7 @@
     <!-- Custom styles for datatables-->
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.5.6/css/buttons.dataTables.min.css">
+    @RenderSection("Style", required: false)
 </head>
 
 <body id="page-top">
@@ -67,7 +75,7 @@
                         <h6 class="collapse-header">Forms</h6>
                         <a class="collapse-item" href="/home/addcandidate">Add Candidate</a>
                         <a class="collapse-item" href="/home/addtrainer">Add Trainer</a>
-                        <a class="collapse-item" href="/home/addclient">Add Client</a>                      
+                        <a class="collapse-item" href="/home/addclient">Add Client</a>
                     </div>
                 </div>
             </li>
@@ -99,7 +107,7 @@
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
                                aria-haspopup="true" aria-expanded="false">
                                 <img class="img-profile rounded-circle" src="~/img/boy.png" style="max-width: 60px">
-                                <span class="ml-2 d-none d-lg-inline text-white small">Maman Ketoprak</span>
+                                <span class="ml-2 d-none d-lg-inline text-white small">@fullname</span>
                             </a>
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
                                 <a class="dropdown-item" href="#">
@@ -139,7 +147,7 @@
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Cancel</button>
-                                    <a href="login.html" class="btn btn-primary">Logout</a>
+                                    <a href="/logout" class="btn btn-primary">Logout</a>
                                 </div>
                             </div>
                         </div>

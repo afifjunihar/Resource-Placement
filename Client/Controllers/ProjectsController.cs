@@ -39,5 +39,24 @@ namespace Client.Controllers
             var result = await project.closedProject();
             return Json(result);
         }
+
+        public IActionResult Details(string Id)
+        {
+            ViewData["encodeID"] = Id;
+            return View();
+        }
+
+        public async Task<JsonResult> GetDetails(string Id)
+        {
+            var result = await project.Details(Id);
+            return Json(result);
+        }
+
+        public async Task<JsonResult> Handler(string Id)
+        {
+            var result = await project.Handler(Id);
+            return Json(result);
+        }
+
     }
 }

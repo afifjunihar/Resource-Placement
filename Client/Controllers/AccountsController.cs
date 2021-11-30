@@ -2,6 +2,7 @@
 using API.Models.ViewModels;
 using Client.Base;
 using Client.Repository.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -42,30 +43,18 @@ namespace Client.Controllers
 				return Json(new { Status = HttpStatusCode.NotFound, Message = jwtToken.Message });
 			}
 
-
 			HttpContext.Session.SetString("JWToken", token);
-			//HttpContext.Session.SetString("Name", jwtHandler.GetName(token));
-			//HttpContext.Session.SetString("ProfilePicture", "assets/img/theme/user.png");
 			return Json(HttpStatusCode.OK);
 		}
 
-		//[HttpPost]
-		//[Route("/Login")]
-		//public async Task<IActionResult> Auth(LoginVM login)
-		//{
-		//	var jwtToken = await account.Auth(login);
-		//	var token = jwtToken.Token;
+		[Authorize]
+		[HttpGet]
+		[Route("/Logout")]
+		public IActionResult Logout() 
+		{
+			HttpContext.Session.Clear();
+			return RedirectToAction("Home");
+		}
 
-		//	if (token == null)
-		//	{
-		//		return BadRequest(jwtToken.Message);
-		//	}
-
-		//	HttpContext.Session.SetString("JWToken", token);
-		//	//HttpContext.Session.SetString("Name", jwtHandler.GetName(token));
-		//	//HttpContext.Session.SetString("ProfilePicture", "assets/img/theme/user.png");
-
-		//	return Ok(jwtToken.Message);
-		//}
 	}
 }

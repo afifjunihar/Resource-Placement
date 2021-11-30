@@ -1,16 +1,20 @@
-﻿
-@{
-    Layout = "~/Views/Shared/Layout/CandidateLayout.cshtml";
-    ViewData["Title"] = "Resource Placemant - Admin";
-}
+﻿@using System.Security.Claims;
+@using API.Library
 
+@{
+	 Layout = "~/Views/Shared/Layout/CandidateLayout.cshtml";
+	 ViewData["Title"] = "Resource Placemant - Admin";
+	 string UserID = ((ClaimsIdentity)User.Identity).GetSid();
+	 string fullname = ((ClaimsIdentity)User.Identity).GetName();
+}
 
 <!-- Breadcrumb-->
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-    <h1 class="h3 mb-0 text-gray-800">Welcome, Candidate</h1>
+    <h1 class="h3 mb-0 text-gray-800">Welcome, @fullname</h1>
     <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="./">Home</a></li>
-        @*<li class="breadcrumb-item">Pages</li>*@
+        @*
+        <li class="breadcrumb-item"><a href="./">Home</a></li>*@
+        <li class="breadcrumb-item"><a href="#">Candidate</a></li>
         <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
     </ol>
 </div>
@@ -49,7 +53,6 @@
         <div class="card">
             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                 <h6 class="m-0 font-weight-bold text-primary">Interview History</h6>
-                <a class="m-0 float-right btn btn-danger btn-sm" href="#">View More &nbsp;<i class="fas fa-chevron-right"></i></a>
             </div>
             <div class="table-responsive">
                 <table class="table align-items-center table-flush">
@@ -57,44 +60,15 @@
                         <tr>
                             <th>#</th>
                             <th>Project</th>
+                            <th>Reqire Skill</th>
                             <th>Jadwal Interview</th>
+                            <th>Jam</th>
                             <th>Status</th>
-                            <th>Action</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="tblResult">
                         <tr>
-                            <td><a>1</a></td>
-                            <td>Udin Wayang</td>
-                            <td>Nasi Padang</td>
-                            <td><span class="badge badge-success">Accepted</span></td>
-                            <td>
-                                <a href="#" class="btn btn-sm btn-info">
-                                    <i class="fas fa-info-circle"></i>
-                                </a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><a>2</a></td>
-                            <td>Jaenab Bajigur</td>
-                            <td>Gundam 90' Edition</td>
-                            <td><span class="badge badge-danger">Rejected</span></td>
-                            <td>
-                                <a href="#" class="btn btn-sm btn-info">
-                                    <i class="fas fa-info-circle"></i>
-                                </a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><a>3</a></td>
-                            <td>Rivat Mahesa</td>
-                            <td>Oblong T-Shirt</td>
-                            <td><span class="badge badge-danger">Rejected</span></td>
-                            <td>
-                                <a href="#" class="btn btn-sm btn-info">
-                                    <i class="fas fa-info-circle"></i>
-                                </a>
-                            </td>
+                            <td colspan="5" class="text-center"><span>Tidak Ada History Interview</span></td>
                         </tr>
                     </tbody>
                 </table>
@@ -105,7 +79,9 @@
 </div>
 
 
-
 @section Script{
-    <script type="text/javascript" src="~/js/candidate.js"></script>
+<script>
+    const userID = "@UserID";
+</script>
+<script type="text/javascript" src="~/js/candidate.js"></script>
 }

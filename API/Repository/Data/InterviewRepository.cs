@@ -22,8 +22,8 @@ namespace API.Repository.Data
 
 		public int AssignInterview(InterviewVM interviewVM)
 		{
-			var checkInterview = iContext.Interviews.Find(interviewVM.User_Id).Interview_Result;
-			if (checkInterview == InterviewResult.Waiting || checkInterview == InterviewResult.Accepted)
+			var checkInterview = iContext.Interviews.Where(x => x.User_Id == interviewVM.User_Id).FirstOrDefault();
+			if (checkInterview == null || checkInterview.Interview_Result != InterviewResult.Accepted)
 			{
 				return 1;
 			}
@@ -47,6 +47,7 @@ namespace API.Repository.Data
 				iContext.SaveChanges();
 
 				Project updateProject = iContext.Projects.Find(interviewData.Project_Id);
+				User client = iContext.Users.Find(updateProject.Creator_Id);
 				bool isFull = updateProject.Current_Capacity == updateProject.Capacity;
 				if (!isFull)
 				{
@@ -73,6 +74,24 @@ namespace API.Repository.Data
 					);
 					_emailSender.SendEmailAsync(Payload);
 					// End of Send Email
+
+					// Send Email To Client
+					var PayloadClient = new Message
+					(
+						//client.Email,
+						"testwebpkl@gmail.com",
+						"Jadwal Interview Dengan Candidate",
+						new EmailVM
+						{
+							Sender_Alias = "HR Metrodata",
+							Action = "Client",
+							Tanggal = interviewData.Interview_Date,
+							Nama = client.FirstName + " " + client.LastName,
+							Project_Name = updateProject.Project_Name,
+							Jobs = updateProject.Required_Skill
+						}
+					);
+					_emailSender.SendEmailAsync(PayloadClient);
 
 
 					return 0;
@@ -169,9 +188,19 @@ namespace API.Repository.Data
 		{
 			var historyList = from intv in iContext.Interviews
 							  where intv.User_Id == UserID
-							  select intv;
+							  join proj in iContext.Projects on intv.Project_Id equals proj.Project_Id
+							  orderby intv.Interview_Id descending
+							  select new
+							  {
+								  id = intv.Interview_Id,
+								  name = proj.Project_Name,
+								  req_skill = proj.Required_Skill,
+								  jadwal = intv.Interview_Date,
+								  status = intv.Interview_Result,
+								  desc = intv.Description
+							  };
 
-			return historyList.ToList();
+			return historyList.Take(3);
 		}
 
 		public Object Current(string UserID)
@@ -179,19 +208,19 @@ namespace API.Repository.Data
 			var currentProject = from intv in iContext.Interviews
 								 join proj in iContext.Projects on intv.Project_Id equals proj.Project_Id
 								 join usr in iContext.Users on intv.User_Id equals usr.User_Id
-								 where usr.User_Status == CandidateStatus.Hired
-								 where intv.Interview_Result == InterviewResult.Accepted
+								 orderby intv.Interview_Id descending
 								 where intv.User_Id == UserID
-								 orderby intv.Interview_Date descending
 								 select new
 								 {
 									 Name = proj.Project_Name,
 									 Accept_Date = intv.Interview_Date,
-									 Spec = proj.Required_Skill
+									 Spec = proj.Required_Skill,
+									 Stats = intv.Interview_Result
 								 };
 			return currentProject.FirstOrDefault();
 
 		}
+
 
 		private void CheckCapacity(int projectId)
 		{

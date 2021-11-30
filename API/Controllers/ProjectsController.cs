@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace API.Controllers
@@ -55,6 +56,25 @@ namespace API.Controllers
             return Ok(result);
         }
 
+        [HttpGet]
+        [Route("Details/{Key}")]
+        public ActionResult Details(string Key)
+        {
+            Object result = project.Details(Key);
+            return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("Handler/{Id}")]
+        public ActionResult Handler(string Id)
+        {
+            var result = project.Handler(Id);
+            if (result != null)
+            {
+                return Ok(result);
+            }
+            return Ok(HttpStatusCode.NoContent);
+        }
 
     }
 }

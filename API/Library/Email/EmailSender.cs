@@ -45,6 +45,12 @@ namespace API.Library.Email
                 emailMessage.Body = bodyBuilder.ToMessageBody();
                 return emailMessage;
             }
+            else if (ActionEmail == "Client")
+            {
+                bodyBuilder.HtmlBody = string.Format($"<div style='max-width:370px;border:1px solid #000;padding:2.1em'><div><h4>Yth Bapak/Ibu <i>{message.Content.Nama}</i>,</h4><p style=text-align:justify>     Dengan email ini kami informasikan kebada bapak/ibu bahwasanya kami telah menyarankan seorang candidate untuk menangani project dari bapak/ibu. Menindaklanjuti hal tersebut kami telah menetapkan jadwal interview dengan candidate yang dilaksanakan pada :<div><ul style=list-style:none;padding:.3em><li style='margin:.37em 0'>Tangal : {message.Content.Tanggal}<li style='margin:.37em 0'>Project : {message.Content.Project_Name}<li style='margin:.37em 0'>Jobdesk : {message.Content.Jobs}</ul></div><p style=text-align:justify>bapak/ibu dapat join as Guest menggunakan web browser dengan menggunakan link di bawah ini.<p><b>Terima kasih.</b></div><hr><p><span>Google Meet :</span> <a href='https://meet.google.com/?pli=1'target=_blank>click this link to join</a><hr><div style=margin-top:2em;font-weight:700;color:#4169e1;font-size:.77em><p>PT. Mitra Integrasi Informatika<p>Talent Acquisition Specialist<p>APL Tower, 37th Floor Jl.<p>Letjen S. Parman Kav. 28 Jakarta 11470</div></div>");
+                emailMessage.Body = bodyBuilder.ToMessageBody();
+                return emailMessage;
+            }
             else if (ActionEmail == "Reset Password") 
             {
                 bodyBuilder.HtmlBody = string.Format($"<div style='max-width:370px;border:1px solid #000;padding:2.1em'><div><h4>Dear <i>{message.Content.Nama}</i>,</h4><p style=text-align:justify>     Dengan email ini kami informasikan bahwa saudara/saudari <b><i>{message.Content.Nama}</i></b> telah mengajukan perubahan Password. Password Anda yang baru adalah <b>{message.Content.Refresh_Password}</b> <p style=text-align:justify>Apabila Tidak melakukan perubahan password, mohon hubungi <i>Admin Metrodata</i>.<p><b>Terima kasih.</b><p>{message.Content.Sender_Alias}</div><hr><div style=margin-top:2em;font-weight:700;color:#4169e1;font-size:.77em><p>PT. Mitra Integrasi Informatika<p>APL Tower, 37th Floor Jl.<p>Letjen S. Parman Kav. 28 Jakarta 11470</div></div>");

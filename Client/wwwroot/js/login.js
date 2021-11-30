@@ -24,7 +24,7 @@
 					let input = $('#email');
 					showValidate(input, response.message);
 				} else {
-					window.location = "/Home/addCandidate"
+					window.location = "/dashboard"
 				}
 			}
 		})
@@ -113,4 +113,7 @@ function forgetPassword()
 	$("#lupapasswordModal").modal('show');
 }
 
+function tutupmodalpassword() {
+	$("#lupapasswordModal").modal('toggle');
+}
 

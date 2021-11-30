@@ -74,5 +74,30 @@ namespace Client.Repository.Data
             return entity;
         }
 
+        public async Task<Object> Details(string Id)
+        {
+            Object entities = null;
+
+            using (var response = await httpClient.GetAsync(request + "Details/" + Id))
+            {
+                string apiResponse = await response.Content.ReadAsStringAsync();
+                entities = JsonConvert.DeserializeObject<Object>(apiResponse);
+            }
+            return entities;
+        }
+
+        public async Task<List<Object>> Handler(string id)
+        {
+            List<Object> entities = new List<Object>();
+
+            using (var response = await httpClient.GetAsync(request + "Handler/" + id))
+            {
+                string apiResponse = await response.Content.ReadAsStringAsync();
+                entities = JsonConvert.DeserializeObject<List<Object>>(apiResponse);
+            }
+            return entities;
+        }
+
+
     }
 }

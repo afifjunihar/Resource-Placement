@@ -58,5 +58,16 @@ namespace Client.Repository.Data
             }
             return entity;
         }
+        public async Task<List<Object>> History(string id)
+        {
+            List<Object> entities = new List<Object>();
+
+            using (var response = await httpClient.GetAsync(request + "history/" + id))
+            {
+                string apiResponse = await response.Content.ReadAsStringAsync();
+                entities = JsonConvert.DeserializeObject<List<Object>>(apiResponse);
+            }
+            return entities;
+        }
     }
 }
