@@ -22,82 +22,22 @@ namespace API.Repository.Data
 
 		public int AssignInterview(InterviewVM interviewVM)
 		{
-			var checkInterview = iContext.Interviews.Where(x => x.User_Id == interviewVM.User_Id).FirstOrDefault();
-			if (checkInterview == null || checkInterview.Interview_Result != InterviewResult.Accepted)
+			var checkInterview = iContext.Interviews.Where(x => x.User_Id == interviewVM.User_Id).OrderByDescending(o => o.Interview_Id).FirstOrDefault();
+			if (checkInterview == null)
 			{
-				return 1;
+				MasukData(interviewVM);
+				return 0;
 			}
-			else 
-			{			
-				var interviewData = new Interview
+			else if (checkInterview != null)
+			{
+				if (checkInterview.Interview_Result != InterviewResult.Accepted)
 				{
-					Interview_Date = interviewVM.Interview_Date,
-					Interview_Result = InterviewResult.Waiting,
-					Description = interviewVM.Description,
-					ReadBy = interviewVM.ReadBy,
-					User_Id = interviewVM.User_Id,
-					Project_Id = interviewVM.Project_Id
-				};
-				iContext.Interviews.Add(interviewData);
-				iContext.SaveChanges();
-
-				User updateUser = iContext.Users.Find(interviewData.User_Id);
-				updateUser.User_Status = CandidateStatus.OnProcess;
-				iContext.Entry(updateUser).State = EntityState.Modified;
-				iContext.SaveChanges();
-
-				Project updateProject = iContext.Projects.Find(interviewData.Project_Id);
-				User client = iContext.Users.Find(updateProject.Creator_Id);
-				bool isFull = updateProject.Current_Capacity == updateProject.Capacity;
-				if (!isFull)
-				{
-					updateProject.Current_Capacity += 1;
-					iContext.Entry(updateProject).State = EntityState.Modified;
-					iContext.SaveChanges();
-					CheckCapacity(updateProject.Project_Id);
-
-					// Send Email
-					var Payload = new Message
-					(
-						//updateUser.Email,
-						"testwebpkl@gmail.com",
-						"Jadwal Interview",
-						new EmailVM
-						{
-							Sender_Alias = "HR Metrodata",
-							Action = "Interview",
-							Tanggal = interviewData.Interview_Date,
-							Nama = updateUser.FirstName + " " + updateUser.LastName,
-							Project_Name = updateProject.Project_Name,
-							Jobs = updateProject.Required_Skill
-						}
-					);
-					_emailSender.SendEmailAsync(Payload);
-					// End of Send Email
-
-					// Send Email To Client
-					var PayloadClient = new Message
-					(
-						//client.Email,
-						"testwebpkl@gmail.com",
-						"Jadwal Interview Dengan Candidate",
-						new EmailVM
-						{
-							Sender_Alias = "HR Metrodata",
-							Action = "Client",
-							Tanggal = interviewData.Interview_Date,
-							Nama = client.FirstName + " " + client.LastName,
-							Project_Name = updateProject.Project_Name,
-							Jobs = updateProject.Required_Skill
-						}
-					);
-					_emailSender.SendEmailAsync(PayloadClient);
-
-
+					MasukData(interviewVM);
 					return 0;
 				}
 				return 1;
 			}
+			return 1;
 		}
 
 		public int AcceptedInterview(KeyVM key)
@@ -236,6 +176,74 @@ namespace API.Repository.Data
 				closeProject.Status = Status.Open;
 				iContext.Entry(closeProject).State = EntityState.Modified;
 				iContext.SaveChanges();
+			}
+		}
+
+		private void MasukData(InterviewVM interviewVM)
+		{
+			var interviewData = new Interview
+			{
+				Interview_Date = interviewVM.Interview_Date,
+				Interview_Result = InterviewResult.Waiting,
+				Description = interviewVM.Description,
+				ReadBy = interviewVM.ReadBy,
+				User_Id = interviewVM.User_Id,
+				Project_Id = interviewVM.Project_Id
+			};
+			iContext.Interviews.Add(interviewData);
+			iContext.SaveChanges();
+
+			User updateUser = iContext.Users.Find(interviewData.User_Id);
+			updateUser.User_Status = CandidateStatus.OnProcess;
+			iContext.Entry(updateUser).State = EntityState.Modified;
+			iContext.SaveChanges();
+
+			Project updateProject = iContext.Projects.Find(interviewData.Project_Id);
+			User client = iContext.Users.Find(updateProject.Creator_Id);
+			bool isFull = updateProject.Current_Capacity == updateProject.Capacity;
+			if (!isFull)
+			{
+				updateProject.Current_Capacity += 1;
+				iContext.Entry(updateProject).State = EntityState.Modified;
+				iContext.SaveChanges();
+				CheckCapacity(updateProject.Project_Id);
+
+				// Send Email
+				var Payload = new Message
+				(
+					//updateUser.Email,
+					"testwebpkl@gmail.com",
+					"Jadwal Interview",
+					new EmailVM
+					{
+						Sender_Alias = "HR Metrodata",
+						Action = "Interview",
+						Tanggal = interviewData.Interview_Date,
+						Nama = updateUser.FirstName + " " + updateUser.LastName,
+						Project_Name = updateProject.Project_Name,
+						Jobs = updateProject.Required_Skill
+					}
+				);
+				_emailSender.SendEmailAsync(Payload);
+				// End of Send Email
+
+				// Send Email To Client
+				var PayloadClient = new Message
+				(
+					//client.Email,
+					"testwebpkl@gmail.com",
+					"Jadwal Interview Dengan Candidate",
+					new EmailVM
+					{
+						Sender_Alias = "HR Metrodata",
+						Action = "Client",
+						Tanggal = interviewData.Interview_Date,
+						Nama = client.FirstName + " " + client.LastName,
+						Project_Name = updateProject.Project_Name,
+						Jobs = updateProject.Required_Skill
+					}
+				);
+				_emailSender.SendEmailAsync(PayloadClient);
 			}
 		}
 	}

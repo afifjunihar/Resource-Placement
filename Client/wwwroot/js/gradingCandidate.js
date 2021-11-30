@@ -58,7 +58,7 @@
                 "data": "",
                 "render": function (data, type, row, meta) {
                     if (row['score_Status'] == "Yes") {
-                        return `<button type="button" class="btn btn-info" onclick="scoreUser('${row['user_Id']}');" data-toggle="modal" data-target="#formModal"><i class='fa fa-address-card-o'></i></button>`
+                      return `<button type="button" class="btn btn-info" onclick="scoreUser('${row['user_Id']}');" data-toggle="modal" data-target="#formModal"><i class='fa fa-address-book'></i></button>`
                     }
                     else if (row['score_Status'] == "No") {
                         return `<span class="badge badge-danger">Belum ada Nilai</span>`

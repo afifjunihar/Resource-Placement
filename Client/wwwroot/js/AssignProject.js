@@ -209,7 +209,7 @@ function Insert() {
         "Interview_Date": $('#interviewdate').val().trim(),
         "Description": $('#deskripsi').val().trim(),
         "ReadBy": $('#readby').val().trim(),
-        "Interview_Result": $('#interviewproses').val().trim()
+        "Result": $('#interviewproses').val().trim()
     }
     console.log(obj);
 

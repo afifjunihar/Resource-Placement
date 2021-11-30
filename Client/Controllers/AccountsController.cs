@@ -53,7 +53,7 @@ namespace Client.Controllers
 		public IActionResult Logout() 
 		{
 			HttpContext.Session.Clear();
-			return RedirectToAction("Home");
+			return RedirectToAction("index", "home");
 		}
 
 	}

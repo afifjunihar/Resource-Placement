@@ -31,8 +31,8 @@ namespace API.Models
 
 	public enum InterviewResult
 	{
+		Waiting,
 		Accepted,
 		Rejected,
-		Waiting
 	}
 }

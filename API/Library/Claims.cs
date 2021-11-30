@@ -29,5 +29,12 @@ namespace API.Library
 
             return (claim != null) ? claim.Value : string.Empty;
         }
-    }
+
+         public static string GetRoles(this ClaimsIdentity claimsIdentity)
+         {
+            var claim = claimsIdentity.FindFirst(ClaimTypes.Role);
+
+            return (claim != null) ? claim.Value : string.Empty;
+         }
+   }
 }

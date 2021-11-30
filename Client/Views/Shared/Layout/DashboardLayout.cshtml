@@ -3,6 +3,7 @@
 @using API.Library;
 @{
     string fullname = ((ClaimsIdentity)User.Identity).GetName();
+    string roles = ((ClaimsIdentity)User.Identity).GetRoles();
 }
 
 <!DOCTYPE html>
@@ -19,9 +20,6 @@
     <link href="~/css/bootstrap.min.css" rel="stylesheet" type="text/css">
     <link href="~/css/ruang-admin.min.css" rel="stylesheet">
 
-    <!-- Custom Icons & CSS for font-->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
     <!-- Custom styles for datatables-->
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.5.6/css/buttons.dataTables.min.css">
@@ -31,69 +29,75 @@
 <body id="page-top">
     <div id="wrapper">
         <!-- Sidebar -->
-        <ul class="navbar-nav sidebar sidebar-light accordion" id="accordionSidebar">
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/dashboard">
-                <div class="sidebar-brand-icon">
-                    <img src="~/img/logo/logo2.png">
-                </div>
-                <div class="sidebar-brand-text mx-3">Resource Placement</div>
-            </a>
-            <hr class="sidebar-divider my-0">
-            <li class="nav-item  active">
-                <a class="nav-link" href="#">
-                    <i class="fas fa-fw fa-tachometer-alt"></i>
-                    <span>Dashboard</span>
-                </a>
-            </li>
-            <hr class="sidebar-divider">
-            <div class="sidebar-heading">
-                Features
-            </div>
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseBootstrap"
-                   aria-expanded="true" aria-controls="collapseBootstrap">
-                    <i class="far fa-fw fa-window-maximize"></i>
-                    <span>Project</span>
-                </a>
-                <div id="collapseBootstrap" class="collapse" aria-labelledby="headingBootstrap" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Project </h6>
-                        <a class="collapse-item" href="/home/listproject">List Project</a>
-                        <a class="collapse-item" href="/home/openProject">Open Project</a>
-                        <a class="collapse-item" href="/home/closedproject">Closed Project</a>
-                    </div>
-                </div>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseForm" aria-expanded="true"
-                   aria-controls="collapseForm">
-                    <i class="fab fa-fw fa-wpforms"></i>
-                    <span>Account</span>
-                </a>
-                <div id="collapseForm" class="collapse" aria-labelledby="headingForm" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Forms</h6>
-                        <a class="collapse-item" href="/home/addcandidate">Add Candidate</a>
-                        <a class="collapse-item" href="/home/addtrainer">Add Trainer</a>
-                        <a class="collapse-item" href="/home/addclient">Add Client</a>
-                    </div>
-                </div>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTable" aria-expanded="true"
-                   aria-controls="collapseTable">
-                    <i class="fas fa-fw fa-table"></i>
-                    <span>Candidate</span>
-                </a>
-                <div id="collapseTable" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">candidate</h6>
-                        <a class="collapse-item" href="/home/gradingCandidate">Grading Candidate</a>
-                        <a class="collapse-item" href="/home/aspekPenilaian">Aspek Penilaian</a>
-                    </div>
-                </div>
-            </li>
-        </ul>
+			<ul class="navbar-nav sidebar sidebar-light accordion" id="accordionSidebar">
+				<a class="sidebar-brand d-flex align-items-center justify-content-center" href="/dashboard">
+					<div class="sidebar-brand-icon">
+						<img src="~/img/logo/logo2.png">
+					</div>
+					<div class="sidebar-brand-text mx-3">Resource Placement</div>
+				</a>
+				<hr class="sidebar-divider my-0">
+				<li class="nav-item  active">
+					<a class="nav-link" href="#">
+						<i class="fas fa-fw fa-tachometer-alt"></i>
+						<span>Dashboard</span>
+					</a>
+				</li>
+				<hr class="sidebar-divider">
+				<div class="sidebar-heading">
+					Features
+				</div>
+				@if (roles == "Manager")
+				{
+					<li class="nav-item">
+						<a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseBootstrap"
+							 aria-expanded="true" aria-controls="collapseBootstrap">
+							<i class="far fa-fw fa-window-maximize"></i>
+							<span>Project</span>
+						</a>
+						<div id="collapseBootstrap" class="collapse" aria-labelledby="headingBootstrap" data-parent="#accordionSidebar">
+							<div class="bg-white py-2 collapse-inner rounded">
+								<h6 class="collapse-header">Project </h6>
+								<a class="collapse-item" href="/home/listproject">List Project</a>
+								<a class="collapse-item" href="/home/openProject">Open Project</a>
+								<a class="collapse-item" href="/home/closedproject">Closed Project</a>
+							</div>
+						</div>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseForm" aria-expanded="true"
+							 aria-controls="collapseForm">
+							<i class="fab fa-fw fa-wpforms"></i>
+							<span>Account</span>
+						</a>
+						<div id="collapseForm" class="collapse" aria-labelledby="headingForm" data-parent="#accordionSidebar">
+							<div class="bg-white py-2 collapse-inner rounded">
+								<h6 class="collapse-header">Forms</h6>
+								<a class="collapse-item" href="/home/addcandidate">Add Candidate</a>
+								<a class="collapse-item" href="/home/addtrainer">Add Trainer</a>
+								<a class="collapse-item" href="/home/addclient">Add Client</a>
+							</div>
+						</div>
+					</li>
+				}
+				@if (roles == "Trainer")
+				{
+					<li class="nav-item">
+						<a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTable" aria-expanded="true"
+							 aria-controls="collapseTable">
+							<i class="fas fa-fw fa-table"></i>
+							<span>Candidate</span>
+						</a>
+						<div id="collapseTable" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
+							<div class="bg-white py-2 collapse-inner rounded">
+								<h6 class="collapse-header">candidate</h6>
+								<a class="collapse-item" href="/home/gradingCandidate">Grading Candidate</a>
+								<a class="collapse-item" href="/home/aspekPenilaian">Aspek Penilaian</a>
+							</div>
+						</div>
+					</li>
+				}
+			</ul>
         <!-- Sidebar -->
         <div id="content-wrapper" class="d-flex flex-column">
             <div id="content">
@@ -110,10 +114,10 @@
                                 <span class="ml-2 d-none d-lg-inline text-white small">@fullname</span>
                             </a>
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="#">
+                                @*<a class="dropdown-item" href="#">
                                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Profile
-                                </a>
+                                </a>*@
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="javascript:void(0);" data-toggle="modal" data-target="#logoutModal">
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
