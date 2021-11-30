@@ -1,4 +1,5 @@
-﻿using API.Models.ViewModels;
+﻿using API.Models;
+using API.Models.ViewModels;
 using Client.Base;
 using Client.Repository.Data;
 using Microsoft.AspNetCore.Mvc;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Client.Controllers
 {
-    public class InterviewsController : BaseController<KeyVM, InterviewRepository, string>
+    public class InterviewsController : BaseController<Interview, InterviewRepository, int>
     {
         private readonly InterviewRepository interview;
         public InterviewsController(InterviewRepository repository) : base(repository)

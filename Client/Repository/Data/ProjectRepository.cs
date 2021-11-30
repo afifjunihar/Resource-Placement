@@ -1,4 +1,5 @@
-﻿using API.Models.ViewModels;
+﻿using API.Models;
+using API.Models.ViewModels;
 using Client.Base.Urls;
 using Client.Views.ViewModels;
 using Newtonsoft.Json;
@@ -12,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Client.Repository.Data
 {
-    public class ProjectRepository : GeneralRepository<KeyVM, string>
+    public class ProjectRepository : GeneralRepository<Project, int>
     {
 
         private readonly Address address;
