@@ -44,13 +44,14 @@ namespace Client.Controllers
 			}
 
 			HttpContext.Session.SetString("JWToken", token);
+
 			return Json(HttpStatusCode.OK);
 		}
 
 		[Authorize]
 		[HttpGet]
 		[Route("/Logout")]
-		public IActionResult Logout() 
+		public IActionResult Logout()
 		{
 			HttpContext.Session.Clear();
 			return RedirectToAction("index", "home");

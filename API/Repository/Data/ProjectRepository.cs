@@ -215,7 +215,7 @@ namespace API.Repository.Data
 
             var projectHandler = from iv in pContext.Interviews
                                  join us in pContext.Users on iv.User_Id equals us.User_Id
-                                 where iv.Project_Id == PK && iv.Interview_Result == InterviewResult.Waiting
+                                 where iv.Project_Id == PK && iv.Interview_Result != InterviewResult.Rejected
                                  select new
                                  {
                                      iv.Interview_Id,

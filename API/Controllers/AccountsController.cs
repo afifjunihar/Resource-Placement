@@ -34,7 +34,7 @@ namespace API.Controllers
 			var result = account.Login(loginVM);
 			if (result == 1)
 			{
-				return NotFound("Email atau Username belum terdaftar");
+				return NotFound(new JWTokenVM { Message = "Email atau Username belum terdaftar", Token = null });
 			}
 			else if (result == 2)
 			{

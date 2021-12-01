@@ -40,18 +40,29 @@
 				}
 			},
 			{
-				data: null,
+				data: 'interview_Result',
 				className: "dt-center",
 				orderable: false,
 				render: function (data, type, row) {
+					if (data == 'Waiting') {
+						return `
+						<button class="btn btn-sm btn-success" id="acc" data-id="${row.interview_Id}" rel="tooltip" data-placement="top" title="Accept Candidate" data-toggle="modal" data-target="#accCan">
+							<i class="fa fa-check"></i>
+						</button>
+						<button class="btn btn-sm btn-danger" id="rjj" data-id="${row.interview_Id}" rel="tooltip" data-placement="top" title="Reject Candidate" data-toggle="modal" data-target="#rjCan">
+							<i class="fa fa-times"></i>
+						</button>
+						`
+					}
 					return `
-					<button class="btn btn-sm btn-success" id="acc" data-id="${row.interview_Id}" rel="tooltip" data-placement="top" title="Accept Candidate" data-toggle="modal" data-target="#accCan">
-						<i class="fa fa-check"></i>
-					</button>
-					<button class="btn btn-sm btn-danger" id="rjj" data-id="${row.interview_Id}" rel="tooltip" data-placement="top" title="Reject Candidate" data-toggle="modal" data-target="#rjCan">
-						<i class="fa fa-times"></i>
-					</button>
-`
+					<button class="btn btn-info btn-icon-split" rel="tooltip" data-placement="top" title="Candidate Hired">
+            <span class="icon text-white-50">
+              <i class="fas fa-check"></i>
+            </span>
+            <span class="text">Hired</span>
+          </button>
+					`
+					
 				}
 			}
 		],

@@ -6,17 +6,19 @@
 		validateEmail();
 		validatePassword();
 
-		var obj = {
-			"EmailOrUsername": $('#email').val().trim(),
-			"Password": $('#pass').val().trim()
-		}
+		var obj = {};
+
+		obj.EmailOrUsername = $('#email').val().trim();
+		obj.Password = $('#pass').val().trim()
 
 		$.ajax({
 			url: "/Login",
 			type: "POST",
 			data: obj,
 			dataType: 'json',
-			success: function (response) {
+			success: function (response, stat, xhr) {
+				console.log(stat)
+				console.log(xhr)
 				if (response.status == "BadRequest") {
 					let input = $('#pass');
 					showValidate(input, response.message);
@@ -26,6 +28,11 @@
 				} else {
 					window.location = "/dashboard"
 				}
+			},
+			error: function (a, b , c) {
+				console.log(a)
+				console.log(b)
+				console.log(c)
 			}
 		})
 	});
@@ -55,7 +62,8 @@
 						'Good job!',
 						'Email Berhasil Dikirim ! ',
 						'success'
-					);					
+					);
+
 				}
 			}
 		})

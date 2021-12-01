@@ -30,7 +30,7 @@ namespace API.Repository.Data
 			}
 			else if (checkInterview != null)
 			{
-				if (checkInterview.Interview_Result != InterviewResult.Accepted)
+				if (checkInterview.Interview_Result != InterviewResult.Accepted || checkInterview.Interview_Result == InterviewResult.Waiting)
 				{
 					MasukData(interviewVM);
 					return 0;

@@ -84,29 +84,28 @@ function Insert() {
 		url: link,
 		type: 'POST',
 		data: obj,
-		dataType: 'JSON'
+		dataType: 'JSON',
 	})
 		.done((result, textStatus, jqXHR) => {
-		console.log(result);
-		console.log(textStatus);
-		console.log(jqXHR);
+			console.log(result);
+			console.log(textStatus);
+			console.log(jqXHR);
 
-		if (result == 200) {
-			Swal.fire(
-				'Good job!',
-				'Data Berhasil Dimasukan! ',
-				'success'
-			);	
-		}
-
-		else {
-			Swal.fire({
-				icon: 'error',
-				title: 'Oops...',
-				text: 'Pendaftaran Gagal!',
-				footer: '<a>Pastikan data User_Id, Email atau Nomer HP belum pernah digunakan sebelumnya. </a>'
-			});
-		}
+			if (jqXHR.status = 200) {
+				Swal.fire(
+					'Good job!',
+					'Data Berhasil Dimasukan! ',
+					'success'
+				);
+				resetInput();
+			} else {
+				Swal.fire({
+					icon: 'error',
+					title: 'Oops...',
+					text: 'Pendaftaran Gagal!',
+					footer: '<a>Pastikan data User_Id, Email atau Nomer HP belum pernah digunakan sebelumnya. </a>'
+				});
+			}
 
 	}).fail((error) => {
 		console.log(error);
@@ -127,6 +126,18 @@ function Insert() {
 				'error'
 			);
 		}
-	};
+};
+
+function resetInput() {
+	$('#inputUserId').val("");
+	$('#firstName').val("");
+	$('#lastName').val("");
+	$('#inputEmail').val("");
+	$('#inputPhone').val("");
+	$('#gender').val("");
+	$('#userStatus').val("");
+	$('#username').val("");
+	$('#password').val("");
+}
 
 

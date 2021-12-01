@@ -398,7 +398,7 @@ namespace API.Repository.Data
                 var Payload = new Message
                 (
                    //updateUser.Email,
-                   "afifjunihar@gmail.com",
+                    "testwebpkl@gmail.com",
                     "Lupa Password",
                     new EmailVM
                     {
