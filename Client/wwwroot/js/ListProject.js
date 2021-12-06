@@ -1,6 +1,10 @@
 ﻿$(document).ready(function () {
+
+    $.fn.dataTable.ext.classes.sPageButton = 'button primary_button';
+
     $('#listProject').DataTable({
         dom: 'Bfrtip',
+        pagingType: "simple_numbers",
         buttons: [
             {
                 extend: 'excelHtml5',
@@ -9,7 +13,7 @@
                 sheetName: 'Projects',
                 text: '',
                 className: 'buttonsToHide fa fa-download btn-default',
-                filename: 'Data',
+                filename: 'All Project Data',
                 autoFilter: true,
                 exportOptions: {
                     columns: [0, 1, 2, 3, 4]
@@ -62,8 +66,9 @@
                 next: `<i class="fa fa-arrow-right">`,
                 previous: `<i class="fa fa-arrow-left">`
             }
-        }
+        }       
     })
+    $('#listProject').DataTable.ext.classes.sPageButton = 'button primary_button';
 });
 
 function downloadExcel() {

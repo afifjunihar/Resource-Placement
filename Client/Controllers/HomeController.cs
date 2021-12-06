@@ -50,16 +50,18 @@ namespace Client.Controllers
 			return View();
 		}
 
-
+		[Authorize(Roles = "Manager")]
 		public IActionResult addCandidate()
 		{
 			return View();
 		}
 
+		[Authorize(Roles = "Manager")]
 		public IActionResult addTrainer()
 		{
 			return View();
 		}
+		[Authorize(Roles = "Manager")]
 		public IActionResult addClient()
 		{
 			return View();
@@ -69,10 +71,13 @@ namespace Client.Controllers
 			return View();
 		}
 
+
 		public IActionResult openProject()
 		{
 			return View();
 		}
+
+		[Authorize(Roles = "Manager")]
 		public IActionResult closedProject()
 		{
 			return View();

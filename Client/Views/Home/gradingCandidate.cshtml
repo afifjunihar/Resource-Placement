@@ -28,8 +28,7 @@
     </div>
     <div class="card-body">
         <div class=" col">
-            <button type="button" class="btn ml-1 text-left btn-dark btn-lg" onclick="downloadExcel();"><i class="fa fa-file-excel-o"></i> Excel </button>
-            <button type="button" id="addScore" class="btn ml-1 text-left btn-success btn-lg" onclick="InputData();" data-toggle="modal" data-target="#formModal"><i class="fa fa-plus"></i> Masukan Nilai </button>
+            <button type="button" class="btn ml-1 text-left btn-dark btn-lg" onclick="downloadExcel();"><i class="far fa-file-excel"></i> Excel </button>    
         </div>
         <table class="table align-items-center table-flush" id="listProject">
             <thead class="thead-light">
@@ -94,8 +93,8 @@
                     </div>
                 </form>
                 <div class="modal-footer">
-                    <button type="button" id="btnsubmit" class="btn btn-primary" onclick="Validate();" hidden>Submit</button>
-                    <button type="button" class="btn btn-danger"  onclick="ReloadDatatables();" data-dismiss="modal">Close</button>
+                    <button type="button" id="btnsubmit" class="btn btn-primary" onclick="Validate();" hidden><i class="fas fa-check"></i> Submit</button>
+                    <button type="button" class="btn btn-danger"  onclick="ReloadDatatables();" data-dismiss="modal"><i class="fas fa-times"></i> Close</button>
                 </div>
             </div>
         </div>
@@ -105,7 +104,6 @@
 @section Script{
 
     <!-- Datatables Script-->
-    <script type="text/javascript" charset="utf8" src="~/vendor/datatables/jquery.dataTables.js"></script>
     <script src="https://cdn.datatables.net/buttons/2.0.1/js/dataTables.buttons.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>

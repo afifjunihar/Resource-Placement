@@ -1,4 +1,5 @@
 ﻿$(document).ready(function () {
+    $.fn.dataTable.ext.classes.sPageButton = 'button primary_button';
     $('#listProject').DataTable({
         dom: 'Bfrtip',
         buttons: [
@@ -9,7 +10,7 @@
                 sheetName: 'Projects',
                 text: '',
                 className: 'buttonsToHide fa fa-download btn-default',
-                filename: 'Data',
+                filename: 'Open Project Data',
                 autoFilter: true,
                 exportOptions: {
                     columns: [0, 1, 2, 3, 4]
@@ -169,14 +170,14 @@ function showCandidate()
     if ($("#showButton").html() == `<i class="far fa-eye"> Show </i>`) {
         $("#showButton").empty();
         $("#showButton").append(`<i class="far fa-eye-slash"> Closed </i>`);
-        $("#listcandidate").attr("hidden", false);
+        $("#listcandidate").toggleClass("fade");
         $('#listProject').DataTable().ajax.reload();
     }
     else
     {
         $("#showButton").empty();
         $("#showButton").append(`<i class="far fa-eye"> Show </i>`);
-        $("#listcandidate").attr("hidden", true);
+        $("#listcandidate").toggleClass("fade");
         $('#listProject').DataTable().ajax.reload();
     }
 

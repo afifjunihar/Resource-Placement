@@ -10,7 +10,7 @@
                 sheetName: 'Projects',
                 text: '',
                 className: 'buttonsToHide fa fa-download btn-default',
-                filename: 'Data',
+                filename: 'Grading Pegawai',
                 autoFilter: true,
                 exportOptions: {
                     columns: [0, 1, 2, 3, 4]
@@ -58,10 +58,20 @@
                 "data": "",
                 "render": function (data, type, row, meta) {
                     if (row['score_Status'] == "Yes") {
-                      return `<button type="button" class="btn btn-info" onclick="scoreUser('${row['user_Id']}');" data-toggle="modal" data-target="#formModal"><i class='fa fa-address-book'></i></button>`
+                        return `<a href="#" class="btn btn-info btn-icon-split" onclick="scoreUser('${row['user_Id']}');" data-toggle="modal" data-target="#formModal">
+                                  <span class="icon text-white-50">
+                                        <i class="fas fa-info-circle"></i>
+                                 </span>
+                                 <span class="text">Tampilkan Nilai</span>
+                                </a>`
                     }
                     else if (row['score_Status'] == "No") {
-                        return `<span class="badge badge-danger">Belum ada Nilai</span>`
+                        return `<a href="#" class="btn btn-warning btn-icon-split" onclick="addscore('${row['user_Id']}');" data-toggle="modal" data-target="#formModal">
+                                  <span class="icon text-white-50">
+                                        <i class="fas fa-exclamation-triangle"></i>
+                                 </span>
+                                 <span class="text">Masukan Nilai</span>
+                                </a>`
                     }
                 }
             }
@@ -73,10 +83,46 @@
             }
         }
     })
+
+    $("#inputForm").validate({
+        rules: {
+            userid: "required",
+            fullstack: "required",
+            frontend: "required",
+            backend: "required",
+            fundamental: "required",
+        },
+        errorPlacement: function (error, element) {
+        },
+        highlight: function (element) {
+            $(element).closest('.form-control').addClass('is-invalid');
+            $(element).closest('.form-group').addClass('is-invalid');
+        },
+        unhighlight: function (element) {
+            $(element).closest('.form-control').removeClass('is-invalid');
+            $(element).closest('.form-group').removeClass('is-invalid');
+        }
+    });
 });
 
 function downloadExcel() {
     $('#listProject').DataTable().buttons().trigger();
+}
+
+function addscore(id)
+{
+    $("#userid").attr("disabled", true);
+    $("#fullstack").attr("disabled", false);
+    $("#frontend").attr("disabled", false);
+    $("#backend").attr("disabled", false);
+    $("#fundamental").attr("disabled", false);
+    $("#btnsubmit").attr("hidden", false);
+
+    $("#userid").val(`${id}`);
+    $("#fundamental").val("");
+    $("#backend").val("");
+    $("#frontend").val("");
+    $("#fullstack").val("");
 }
 
 function scoreUser(id)
@@ -129,7 +175,6 @@ function InputData() {
     $("#backend").val("");
     $("#frontend").val("");
     $("#fullstack").val("");
-
 }
 
 
@@ -151,7 +196,6 @@ function Validate() {
 
 function Insert()
 {
-
     var obj = {
         "User_Id": $('#userid').val().trim(),
         "fundamentalCScore": $('#fundamental').val().trim(),

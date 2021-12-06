@@ -1,5 +1,5 @@
 ﻿$(document).ready(function () {
-
+    $.fn.dataTable.ext.classes.sPageButton = 'button primary_button';
     $('#listProject').DataTable({
         dom: 'Bfrtip',
         buttons: [
@@ -10,7 +10,7 @@
                 sheetName: 'Projects',
                 text: '',
                 className: 'buttonsToHide fa fa-download btn-default',
-                filename: 'Data',
+                filename: 'ClosedProjectData',
                 autoFilter: true,
                 exportOptions: {
                     columns: [0, 1, 2, 3, 4]
@@ -65,6 +65,7 @@
             }
         }
     })
+    $('#listProject').DataTable.ext.classes.sPageButton = 'button primary_button';
 });
 
 function downloadExcel() {
